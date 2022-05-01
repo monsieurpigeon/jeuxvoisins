@@ -1,0 +1,25 @@
+fragment peopleData on People {
+  id
+  firstName
+  lastName
+}
+
+query allPeoples {
+  queryPeople {
+    ...peopleData
+  }
+}
+
+query getPeople($id: ID!) {
+  getPeople(id: $id) {
+    ...peopleData
+  }
+}
+
+mutation addPeople($people: AddPeopleInput!) {
+  addPeople(input: [$people]) {
+    people {
+      ...peopleData
+    }
+  }
+}

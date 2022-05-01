@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Games } from './pages/Games'
+import { Game } from './pages/Game'
+import { Layout } from './components/Layout'
+import { People } from './pages/People'
+import { Peoples } from './pages/Peoples'
+import { Company } from './pages/Company'
+import { Companies } from './pages/Companies'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/game/:id" element={<Game />} />
+          <Route path="/" element={<Games />} />
+          <Route path="/people/:id" element={<People />} />
+          <Route path="/people" element={<Peoples />} />
+          <Route path="/company/:id" element={<Company />} />
+          <Route path="/company" element={<Companies />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

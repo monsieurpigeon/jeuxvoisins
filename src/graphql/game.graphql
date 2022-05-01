@@ -1,0 +1,23 @@
+fragment gameData on Game {
+  id
+  name
+}
+
+query allGames {
+  queryGame {
+    ...gameData
+  }
+}
+
+query getGame($id: ID!) {
+  getGame(id: $id) {
+    ...gameData
+  }
+}
+mutation addGame($game: AddGameInput!) {
+  addGame(input: [$game]) {
+    game {
+      ...gameData
+    }
+  }
+}

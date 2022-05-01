@@ -1,0 +1,15 @@
+type Game {
+  id: ID!
+  name: String! @search(by: [term])
+}
+
+type Company {
+  id: ID!
+  name: String! @search(by: [term])
+}
+
+type People {
+  id: ID!
+  firstName: String! @search(by: [term])
+  lastName: String! @search(by: [term])
+}

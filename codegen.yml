@@ -1,0 +1,12 @@
+overwrite: true
+schema: "https://nameless-brook-330330.eu-central-1.aws.cloud.dgraph.io/graphql"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"
