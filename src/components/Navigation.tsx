@@ -13,10 +13,11 @@ const MenuElement = styled.li`
 `
 
 const menuElements = [
-  { label: 'Game', target: '/' },
-  { label: 'People', target: '/people' },
-  { label: 'Company', target: '/company' },
-  { label: 'Festival', target: '/festival' },
+  { label: 'Accueil', target: '/' },
+  { label: 'Jeux', target: '/jeux' },
+  { label: 'Voisins', target: '/voisins' },
+  { label: 'Messages', target: '/messages' },
+  { label: 'Profil', target: '/profil' },
 ]
 
 export const Navigation = () => {
