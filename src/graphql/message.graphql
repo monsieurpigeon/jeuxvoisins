@@ -1,0 +1,12 @@
+fragment messageFragment on Message {
+  id
+  createdAt
+  content
+}
+
+fragment messageData on Message {
+  ...messageFragment
+  conversation {
+    ...conversationFragment
+  }
+}

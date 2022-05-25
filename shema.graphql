@@ -1,44 +1,27 @@
 type Game {
   id: ID!
   name: String! @search(by: [term])
-  authors: [People] @hasInverse(field: gameAuthor)
-  illustrators: [People] @hasInverse(field: gameIllustrator)
 }
 
-type Company {
+type User {
   id: ID!
-  name: String! @search(by: [term])
+  username: String!
+  zipCode: String
+  latitude: Float
+  longitude: Float
+  conversations: [Conversation] @hasInverse(field: users)
 }
 
-type People {
+type Conversation {
   id: ID!
-  firstName: String! @search(by: [term])
-  lastName: String! @search(by: [term])
-  gameAuthor: [Game] @hasInverse(field: authors)
-  gameIllustrator: [Game] @hasInverse(field: illustrators)
+  users: [User] @hasInverse(field: conversations)
+  messages: [Message] @hasInverse(field: conversation)
+  createdAt: DateTime
 }
 
-type Festival {
+type Message {
   id: ID!
-  name: String! @search(by: [term])
-  events: [Event] @hasInverse(field: festival)
-}
-
-type Event {
-  id: ID!
-  year: Int!
-  festival: Festival! @hasInverse(field: events)
-  awards: [Award] @hasInverse(field: event)
-}
-
-type Award {
-  id: ID!
-  name: String!
-  event: Event!
-}
-
-type Prize {
-  id: ID!
-  name: String!
-  game: Game
+  conversation: Conversation @hasInverse(field: messages)
+  createdAt: DateTime
+  content: String!
 }

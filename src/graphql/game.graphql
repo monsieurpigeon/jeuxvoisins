@@ -5,12 +5,6 @@ fragment gameFragment on Game {
 
 fragment gameData on Game {
   ...gameFragment
-  authors {
-    ...peopleFragment
-  }
-  illustrators {
-    ...peopleFragment
-  }
 }
 
 query allGames {

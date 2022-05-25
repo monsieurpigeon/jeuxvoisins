@@ -1,0 +1,42 @@
+fragment userFragment on User {
+  id
+  username
+  zipCode
+  latitude
+  longitude
+}
+
+fragment userData on User {
+  ...userFragment
+  conversations {
+    ...conversationFragment
+  }
+}
+
+query allUsers {
+  queryUser {
+    ...userData
+  }
+}
+
+query getUser($id: ID!) {
+  getUser(id: $id) {
+    ...userData
+  }
+}
+
+mutation addUser($user: AddUserInput!) {
+  addUser(input: [$user]) {
+    user {
+      ...userData
+    }
+  }
+}
+
+mutation updateUser($patch: UpdateUserInput!) {
+  updateUser(input: $patch) {
+    user {
+      ...userData
+    }
+  }
+}

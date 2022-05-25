@@ -1,0 +1,14 @@
+fragment conversationFragment on Conversation {
+  id
+  createdAt
+}
+
+fragment conversationData on Conversation {
+  ...conversationFragment
+  messages {
+    ...messageFragment
+  }
+  users {
+    ...userFragment
+  }
+}
