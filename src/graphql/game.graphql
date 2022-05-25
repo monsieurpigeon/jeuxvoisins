@@ -1,6 +1,16 @@
-fragment gameData on Game {
+fragment gameFragment on Game {
   id
   name
+}
+
+fragment gameData on Game {
+  ...gameFragment
+  authors {
+    ...peopleFragment
+  }
+  illustrators {
+    ...peopleFragment
+  }
 }
 
 query allGames {
@@ -14,8 +24,17 @@ query getGame($id: ID!) {
     ...gameData
   }
 }
+
 mutation addGame($game: AddGameInput!) {
   addGame(input: [$game]) {
+    game {
+      ...gameData
+    }
+  }
+}
+
+mutation updateGame($patch: UpdateGameInput!) {
+  updateGame(input: $patch) {
     game {
       ...gameData
     }

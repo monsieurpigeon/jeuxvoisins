@@ -12,30 +12,28 @@ const MenuElement = styled.li`
   display: block;
 `
 
+const menuElements = [
+  { label: 'Game', target: '/' },
+  { label: 'People', target: '/people' },
+  { label: 'Company', target: '/company' },
+  { label: 'Festival', target: '/festival' },
+]
+
 export const Navigation = () => {
   return (
     <Menu>
-      <Link
-        to={{
-          pathname: '/',
-        }}
-      >
-        <MenuElement>Game</MenuElement>
-      </Link>
-      <Link
-        to={{
-          pathname: '/people',
-        }}
-      >
-        <MenuElement>People</MenuElement>
-      </Link>
-      <Link
-        to={{
-          pathname: '/company',
-        }}
-      >
-        <MenuElement>Company</MenuElement>
-      </Link>
+      {menuElements.map((el) => {
+        return (
+          <Link
+            key={el.label}
+            to={{
+              pathname: el.target,
+            }}
+          >
+            <MenuElement>{el.label}</MenuElement>
+          </Link>
+        )
+      })}
     </Menu>
   )
 }

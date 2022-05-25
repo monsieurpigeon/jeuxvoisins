@@ -1,7 +1,17 @@
-fragment peopleData on People {
+fragment peopleFragment on People {
   id
   firstName
   lastName
+}
+
+fragment peopleData on People {
+  ...peopleFragment
+  gameAuthor {
+    ...gameFragment
+  }
+  gameIllustrator {
+    ...gameFragment
+  }
 }
 
 query allPeoples {

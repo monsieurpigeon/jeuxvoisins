@@ -1,6 +1,8 @@
 type Game {
   id: ID!
   name: String! @search(by: [term])
+  authors: [People] @hasInverse(field: gameAuthor)
+  illustrators: [People] @hasInverse(field: gameIllustrator)
 }
 
 type Company {
@@ -12,4 +14,31 @@ type People {
   id: ID!
   firstName: String! @search(by: [term])
   lastName: String! @search(by: [term])
+  gameAuthor: [Game] @hasInverse(field: authors)
+  gameIllustrator: [Game] @hasInverse(field: illustrators)
+}
+
+type Festival {
+  id: ID!
+  name: String! @search(by: [term])
+  events: [Event] @hasInverse(field: festival)
+}
+
+type Event {
+  id: ID!
+  year: Int!
+  festival: Festival! @hasInverse(field: events)
+  awards: [Award] @hasInverse(field: event)
+}
+
+type Award {
+  id: ID!
+  name: String!
+  event: Event!
+}
+
+type Prize {
+  id: ID!
+  name: String!
+  game: Game
 }

@@ -1,0 +1,28 @@
+fragment festivalFragment on Festival {
+  id
+  name
+}
+
+fragment festivalData on Festival {
+  ...festivalFragment
+}
+
+query allFestivals {
+  queryFestival {
+    ...festivalData
+  }
+}
+
+query getFestival($id: ID!) {
+  getFestival(id: $id) {
+    ...festivalData
+  }
+}
+
+mutation addFestival($festival: AddFestivalInput!) {
+  addFestival(input: [$festival]) {
+    festival {
+      ...festivalData
+    }
+  }
+}

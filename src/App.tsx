@@ -6,6 +6,8 @@ import { People } from './pages/People'
 import { Peoples } from './pages/Peoples'
 import { Company } from './pages/Company'
 import { Companies } from './pages/Companies'
+import { Festival } from './pages/Festival'
+import { Festivals } from './pages/Festivals'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/people" element={<Peoples />} />
           <Route path="/company/:id" element={<Company />} />
           <Route path="/company" element={<Companies />} />
+          <Route path="/festival/:id" element={<Festival />} />
+          <Route path="/festival" element={<Festivals />} />
         </Routes>
       </Layout>
     </BrowserRouter>
