@@ -18,6 +18,7 @@ const SignUp = () => {
     },
     [navigate]
   )
+
   return (
     <div>
       <h1>Sign up</h1>
