@@ -8,7 +8,7 @@ fragment gameData on Game {
 }
 
 query allGames {
-  queryGame {
+  queryGame(order: { asc: name }) {
     ...gameData
   }
 }

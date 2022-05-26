@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Home } from './pages/Home'
-import { Layout } from './components/Layout'
-import { Games } from './pages/Games'
-import { Neighbors } from './pages/Neighbors'
-import { Conversations } from './pages/Conversations'
-import { Profile } from './pages/Profile'
+import Home from './pages/Home'
+import Layout from './components/Layout'
+import Games from './pages/Games'
+import Neighbors from './pages/Neighbors'
+import Conversations from './pages/Conversations'
+import Profile from './pages/Profile'
 
 function App() {
   return (

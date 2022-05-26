@@ -1,5 +1,7 @@
 type Props = {}
 
-export const Neighbors: React.FC<Props> = () => {
+const Neighbors: React.FC<Props> = () => {
   return <div> Voisins</div>
 }
+
+export default Neighbors

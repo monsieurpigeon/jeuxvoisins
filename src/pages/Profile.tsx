@@ -1,5 +1,7 @@
 type Props = {}
 
-export const Profile: React.FC<Props> = () => {
+const Profile: React.FC<Props> = () => {
   return <div> Profile</div>
 }
+
+export default Profile

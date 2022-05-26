@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Container = styled.div`
-  background-color: aqua;
+  background-color: black;
   width: 100vw;
   height: 100vh;
 `
@@ -16,7 +16,7 @@ const Content = styled.div`
   margin: auto;
 `
 
-export const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children }) => {
   return (
     <Container>
       <Navigation />
@@ -24,3 +24,5 @@ export const Layout: React.FC<Props> = ({ children }) => {
     </Container>
   )
 }
+
+export default Layout

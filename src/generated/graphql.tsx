@@ -1041,7 +1041,7 @@ export const UserDataFragmentDoc = gql`
 ${ConversationFragmentFragmentDoc}`;
 export const AllGamesDocument = gql`
     query allGames {
-  queryGame {
+  queryGame(order: {asc: name}) {
     ...gameData
   }
 }
