@@ -10,7 +10,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import { AuthContext } from './contextes/auth'
 import Login from './pages/auth/Login'
-import SignUp from './pages/auth/SignUp'
 import Conversations from './pages/Conversations'
 import Games from './pages/Games'
 import Home from './pages/Home'
@@ -55,7 +54,6 @@ function App({ idToken }: any) {
             <Route path="/messages" element={<Conversations />} />
             <Route path="/profil" element={<Profile />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/sign-up" element={<SignUp />} />
           </Routes>
         </Layout>
       </BrowserRouter>
