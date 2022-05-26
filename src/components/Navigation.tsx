@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Menu = styled.ul`
@@ -12,6 +13,11 @@ const MenuElement = styled.li`
   display: block;
 `
 
+const LogOut = styled.div`
+  color: white;
+  cursor: pointer;
+`
+
 const menuElements = [
   { label: 'Accueil', target: '/' },
   { label: 'Jeux', target: '/jeux' },
@@ -21,6 +27,14 @@ const menuElements = [
 ]
 
 export const Navigation = () => {
+  const auth = getAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/')
+    })
+  }
   return (
     <Menu>
       {menuElements.map((el) => {
@@ -35,6 +49,7 @@ export const Navigation = () => {
           </Link>
         )
       })}
+      <LogOut onClick={handleLogout}>LOG OUT</LogOut>
     </Menu>
   )
 }

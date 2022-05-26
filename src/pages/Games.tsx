@@ -11,7 +11,7 @@ const Container = styled.div`
 `
 
 const Games: React.FC<Props> = () => {
-  const { data, error, loading } = useAllGamesQuery()
+  const { data } = useAllGamesQuery()
   return (
     <Container>
       {data?.queryGame?.map(
