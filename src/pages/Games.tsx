@@ -15,7 +15,7 @@ const Games: React.FC<Props> = () => {
   return (
     <Container>
       {data?.queryGame?.map(
-        (game) => game && <GameCard name={game.name}></GameCard>
+        (game) => game && <GameCard key={game.id} name={game.name}></GameCard>
       )}
     </Container>
   )

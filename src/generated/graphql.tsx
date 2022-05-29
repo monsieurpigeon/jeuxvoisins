@@ -85,8 +85,7 @@ export type AddMessagePayloadMessageArgs = {
 
 export type AddUserInput = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
-  latitude?: InputMaybe<Scalars['Float']>;
-  longitude?: InputMaybe<Scalars['Float']>;
+  email: Scalars['String'];
   username: Scalars['String'];
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -526,6 +525,7 @@ export type MutationAddMessageArgs = {
 
 export type MutationAddUserArgs = {
   input: Array<AddUserInput>;
+  upsert?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -667,7 +667,7 @@ export type QueryGetMessageArgs = {
 
 
 export type QueryGetUserArgs = {
-  id: Scalars['ID'];
+  username: Scalars['String'];
 };
 
 
@@ -820,9 +820,7 @@ export type User = {
   __typename?: 'User';
   conversations?: Maybe<Array<Maybe<Conversation>>>;
   conversationsAggregate?: Maybe<ConversationAggregateResult>;
-  id: Scalars['ID'];
-  latitude?: Maybe<Scalars['Float']>;
-  longitude?: Maybe<Scalars['Float']>;
+  email: Scalars['String'];
   username: Scalars['String'];
   zipCode?: Maybe<Scalars['String']>;
 };
@@ -843,14 +841,8 @@ export type UserConversationsAggregateArgs = {
 export type UserAggregateResult = {
   __typename?: 'UserAggregateResult';
   count?: Maybe<Scalars['Int']>;
-  latitudeAvg?: Maybe<Scalars['Float']>;
-  latitudeMax?: Maybe<Scalars['Float']>;
-  latitudeMin?: Maybe<Scalars['Float']>;
-  latitudeSum?: Maybe<Scalars['Float']>;
-  longitudeAvg?: Maybe<Scalars['Float']>;
-  longitudeMax?: Maybe<Scalars['Float']>;
-  longitudeMin?: Maybe<Scalars['Float']>;
-  longitudeSum?: Maybe<Scalars['Float']>;
+  emailMax?: Maybe<Scalars['String']>;
+  emailMin?: Maybe<Scalars['String']>;
   usernameMax?: Maybe<Scalars['String']>;
   usernameMin?: Maybe<Scalars['String']>;
   zipCodeMax?: Maybe<Scalars['String']>;
@@ -860,15 +852,14 @@ export type UserAggregateResult = {
 export type UserFilter = {
   and?: InputMaybe<Array<InputMaybe<UserFilter>>>;
   has?: InputMaybe<Array<InputMaybe<UserHasFilter>>>;
-  id?: InputMaybe<Array<Scalars['ID']>>;
   not?: InputMaybe<UserFilter>;
   or?: InputMaybe<Array<InputMaybe<UserFilter>>>;
+  username?: InputMaybe<StringHashFilter>;
 };
 
 export enum UserHasFilter {
   Conversations = 'conversations',
-  Latitude = 'latitude',
-  Longitude = 'longitude',
+  Email = 'email',
   Username = 'username',
   ZipCode = 'zipCode'
 }
@@ -880,25 +871,20 @@ export type UserOrder = {
 };
 
 export enum UserOrderable {
-  Latitude = 'latitude',
-  Longitude = 'longitude',
+  Email = 'email',
   Username = 'username',
   ZipCode = 'zipCode'
 }
 
 export type UserPatch = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
-  latitude?: InputMaybe<Scalars['Float']>;
-  longitude?: InputMaybe<Scalars['Float']>;
-  username?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
 
 export type UserRef = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
-  id?: InputMaybe<Scalars['ID']>;
-  latitude?: InputMaybe<Scalars['Float']>;
-  longitude?: InputMaybe<Scalars['Float']>;
+  email?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -909,7 +895,7 @@ export type WithinFilter = {
 
 export type ConversationFragmentFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null };
 
-export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string } | null> | null, users?: Array<{ __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null } | null> | null };
+export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null };
 
 export type GameFragmentFragment = { __typename?: 'Game', id: string, name: string };
 
@@ -945,35 +931,35 @@ export type MessageFragmentFragment = { __typename?: 'Message', id: string, crea
 
 export type MessageDataFragment = { __typename?: 'Message', id: string, createdAt?: any | null, content: string, conversation?: { __typename?: 'Conversation', id: string, createdAt?: any | null } | null };
 
-export type UserFragmentFragment = { __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null };
+export type UserFragmentFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null };
 
-export type UserDataFragment = { __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null };
+export type UserDataFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null };
+export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null };
 
 export type GetUserQueryVariables = Exact<{
-  id: Scalars['ID'];
+  username: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null };
 
 export type AddUserMutationVariables = Exact<{
   user: AddUserInput;
 }>;
 
 
-export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
+export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   patch: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', id: string, username: string, zipCode?: string | null, latitude?: number | null, longitude?: number | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
 
 export const ConversationFragmentFragmentDoc = gql`
     fragment conversationFragment on Conversation {
@@ -990,11 +976,9 @@ export const MessageFragmentFragmentDoc = gql`
     `;
 export const UserFragmentFragmentDoc = gql`
     fragment userFragment on User {
-  id
   username
+  email
   zipCode
-  latitude
-  longitude
 }
     `;
 export const ConversationDataFragmentDoc = gql`
@@ -1213,8 +1197,8 @@ export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
 export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
 export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
 export const GetUserDocument = gql`
-    query getUser($id: ID!) {
-  getUser(id: $id) {
+    query getUser($username: String!) {
+  getUser(username: $username) {
     ...userData
   }
 }
@@ -1232,7 +1216,7 @@ export const GetUserDocument = gql`
  * @example
  * const { data, loading, error } = useGetUserQuery({
  *   variables: {
- *      id: // value for 'id'
+ *      username: // value for 'username'
  *   },
  * });
  */

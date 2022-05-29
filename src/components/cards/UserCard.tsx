@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-type Props = {}
+type Props = { username: string }
 
 const Container = styled.div`
   width: 100px;
@@ -12,6 +12,6 @@ const Container = styled.div`
   color: white;
 `
 
-export const UserCard: React.FC<Props> = () => {
-  return <Container>UserCard</Container>
+export const UserCard: React.FC<Props> = ({ username }) => {
+  return <Container>User: {username}</Container>
 }

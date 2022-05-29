@@ -1,9 +1,7 @@
 fragment userFragment on User {
-  id
   username
+  email
   zipCode
-  latitude
-  longitude
 }
 
 fragment userData on User {
@@ -19,8 +17,8 @@ query allUsers {
   }
 }
 
-query getUser($id: ID!) {
-  getUser(id: $id) {
+query getUser($username: String!) {
+  getUser(username: $username) {
     ...userData
   }
 }

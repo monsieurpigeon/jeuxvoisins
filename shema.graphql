@@ -4,11 +4,9 @@ type Game {
 }
 
 type User {
-  id: ID!
-  username: String!
+  username: String! @id
+  email: String!
   zipCode: String
-  latitude: Float
-  longitude: Float
   conversations: [Conversation] @hasInverse(field: users)
 }
 

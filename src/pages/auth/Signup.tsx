@@ -2,21 +2,26 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../../base'
+import { useAddUserMutation } from '../../generated/graphql'
 
 const SignUp = () => {
+  const [addUser] = useAddUserMutation()
   const navigate = useNavigate()
   const handleSignUp = useCallback(
     async (event: any) => {
       event.preventDefault()
-      const { email, password } = event.target.elements
+      const { email, password, username } = event.target.elements
       try {
         await createUserWithEmailAndPassword(auth, email.value, password.value)
+        await addUser({
+          variables: { user: { username: username.value, email: email.value } },
+        })
         navigate('/')
       } catch (error) {
         alert(error)
       }
     },
-    [navigate]
+    [navigate, addUser]
   )
 
   return (
@@ -26,6 +31,10 @@ const SignUp = () => {
         <label>
           Email
           <input name="email" type="email" placeholder="Email" />
+        </label>
+        <label>
+          Username
+          <input name="username" type="text" placeholder="Username" />
         </label>
         <label>
           Password
