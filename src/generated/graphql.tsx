@@ -748,6 +748,31 @@ export type StringTermFilter = {
   anyofterms?: InputMaybe<Scalars['String']>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  aggregateConversation?: Maybe<ConversationAggregateResult>;
+  getConversation?: Maybe<Conversation>;
+  queryConversation?: Maybe<Array<Maybe<Conversation>>>;
+};
+
+
+export type SubscriptionAggregateConversationArgs = {
+  filter?: InputMaybe<ConversationFilter>;
+};
+
+
+export type SubscriptionGetConversationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type SubscriptionQueryConversationArgs = {
+  filter?: InputMaybe<ConversationFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<ConversationOrder>;
+};
+
 export type UpdateConversationInput = {
   filter: ConversationFilter;
   remove?: InputMaybe<ConversationPatch>;
@@ -946,6 +971,13 @@ export type AddConversationMutationVariables = Exact<{
 
 
 export type AddConversationMutation = { __typename?: 'Mutation', addConversation?: { __typename?: 'AddConversationPayload', conversation?: Array<{ __typename?: 'Conversation', id: string } | null> | null } | null };
+
+export type GetConversationSubscriptionVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetConversationSubscription = { __typename?: 'Subscription', getConversation?: { __typename?: 'Conversation', id: string, users?: Array<{ __typename?: 'User', username: string, email: string } | null> | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null } | null };
 
 export type GameFragmentFragment = { __typename?: 'Game', id: string, name: string };
 
@@ -1193,6 +1225,46 @@ export function useAddConversationMutation(baseOptions?: Apollo.MutationHookOpti
 export type AddConversationMutationHookResult = ReturnType<typeof useAddConversationMutation>;
 export type AddConversationMutationResult = Apollo.MutationResult<AddConversationMutation>;
 export type AddConversationMutationOptions = Apollo.BaseMutationOptions<AddConversationMutation, AddConversationMutationVariables>;
+export const GetConversationDocument = gql`
+    subscription getConversation($id: ID!) {
+  getConversation(id: $id) {
+    id
+    users {
+      username
+      email
+    }
+    messages {
+      ...messageFragment
+      author {
+        username
+      }
+    }
+  }
+}
+    ${MessageFragmentFragmentDoc}`;
+
+/**
+ * __useGetConversationSubscription__
+ *
+ * To run a query within a React component, call `useGetConversationSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetConversationSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConversationSubscription({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetConversationSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetConversationSubscription, GetConversationSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetConversationSubscription, GetConversationSubscriptionVariables>(GetConversationDocument, options);
+      }
+export type GetConversationSubscriptionHookResult = ReturnType<typeof useGetConversationSubscription>;
+export type GetConversationSubscriptionResult = Apollo.SubscriptionResult<GetConversationSubscription>;
 export const AllGamesDocument = gql`
     query allGames {
   queryGame(order: {asc: name}) {

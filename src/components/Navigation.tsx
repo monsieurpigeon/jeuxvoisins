@@ -14,10 +14,6 @@ const MenuElement = styled.li`
   display: block;
 `
 
-const Container = styled.div`
-  color: white;
-`
-
 const LogOut = styled.div`
   color: white;
   cursor: pointer;
@@ -58,7 +54,6 @@ export const Navigation = () => {
       {currentUser && (
         <>
           <LogOut onClick={handleLogout}>LOG OUT</LogOut>
-          <Container>Je suis : {currentUser?.email}</Container>
         </>
       )}
     </Menu>

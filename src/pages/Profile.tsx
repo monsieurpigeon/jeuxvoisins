@@ -5,6 +5,8 @@ import { useGetUserQuery } from '../generated/graphql'
 type Props = {}
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   color: white;
 `
 
@@ -13,7 +15,13 @@ const Profile: React.FC<Props> = () => {
   const { data } = useGetUserQuery({
     variables: { email: currentUser?.email || '' },
   })
-  return <Container> Profile : {data?.getUser?.username}</Container>
+  return (
+    <Container>
+      <h1>Profil</h1>
+      <div>username: {data?.getUser?.username}</div>
+      <div>email: {data?.getUser?.email}</div>
+    </Container>
+  )
 }
 
 export default Profile

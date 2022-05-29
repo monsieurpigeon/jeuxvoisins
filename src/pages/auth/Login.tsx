@@ -1,11 +1,14 @@
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import React, { useCallback, useContext } from 'react'
+import { useCallback } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { auth } from '../../base'
-import { AuthContext } from '../../contextes/auth'
+import { useAuth } from '../../contextes/auth'
 
 const Login = () => {
+  const { currentUser } = useAuth()
   const navigate = useNavigate()
+
   const handleLogin = useCallback(
     async (event: any) => {
       event.preventDefault()
@@ -20,30 +23,53 @@ const Login = () => {
     [navigate]
   )
 
-  const { currentUser } = useContext(AuthContext)
-
   if (currentUser) {
     return <Navigate to="/" />
   }
 
+  const Container = styled.div`
+    color: white;
+    display: flex;
+    flex-direction: column;
+  `
+
+  const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  `
+  const Input = styled.input`
+    margin-left: 10px;
+  `
+  const Button = styled.button`
+    padding: 5px;
+    width: 200px;
+  `
+
+  const StyledLink = styled.div`
+    color: white;
+    padding: 20px;
+    text-decoration: none;
+  `
+
   return (
-    <div>
+    <Container>
       <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
+      <Form onSubmit={handleLogin}>
         <label>
           Email
-          <input name="email" type="email" placeholder="Email" />
+          <Input name="email" type="email" placeholder="Email" />
         </label>
         <label>
           Password
-          <input name="password" type="password" placeholder="Password" />
+          <Input name="password" type="password" placeholder="Password" />
         </label>
-        <button type="submit">Log in</button>
-      </form>
-      <span className="input-group-btn">
-        <Link to="/sign-up">Click to Sign Up</Link>
-      </span>
-    </div>
+        <Button type="submit">Log in</Button>
+      </Form>
+      <Link to="/sign-up">
+        <StyledLink>Click to Sign Up</StyledLink>
+      </Link>
+    </Container>
   )
 }
 

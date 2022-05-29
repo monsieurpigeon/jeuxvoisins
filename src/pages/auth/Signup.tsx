@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { auth } from '../../base'
 import { useAddUserMutation } from '../../generated/graphql'
 
@@ -24,25 +25,44 @@ const Signup = () => {
     [navigate, addUser]
   )
 
+  const Container = styled.div`
+    color: white;
+    display: flex;
+    flex-direction: column;
+  `
+
+  const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  `
+  const Input = styled.input`
+    margin-left: 10px;
+  `
+  const Button = styled.button`
+    padding: 5px;
+    width: 200px;
+  `
+
   return (
-    <div>
+    <Container>
       <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
+      <Form onSubmit={handleSignUp}>
         <label>
           Email
-          <input name="email" type="email" placeholder="Email" />
+          <Input name="email" type="email" placeholder="Email" />
         </label>
         <label>
           Username
-          <input name="username" type="text" placeholder="Username" />
+          <Input name="username" type="text" placeholder="Username" />
         </label>
         <label>
           Password
-          <input name="password" type="password" placeholder="Password" />
+          <Input name="password" type="password" placeholder="Password" />
         </label>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+        <Button type="submit">Sign Up</Button>
+      </Form>
+    </Container>
   )
 }
 

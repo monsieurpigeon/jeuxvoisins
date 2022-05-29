@@ -7,14 +7,14 @@ type User {
   email: String! @id
   username: String! @id
   zipCode: String
-  conversations: [Conversation] @hasInverse(field: users)
-  messages: [Message] @hasInverse(field: author)
+  conversations: [Conversation!] @hasInverse(field: users)
+  messages: [Message!] @hasInverse(field: author)
 }
 
 type Conversation {
   id: ID!
-  users: [User] @hasInverse(field: conversations)
-  messages: [Message] @hasInverse(field: conversation)
+  users: [User!] @hasInverse(field: conversations)
+  messages: [Message!] @hasInverse(field: conversation)
   createdAt: DateTime
 }
 

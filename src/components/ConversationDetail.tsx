@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
-import { useAddMessageMutation } from '../generated/graphql'
+import {
+  useAddMessageMutation,
+  useGetConversationSubscription,
+} from '../generated/graphql'
 
 type Props = { conversation: any }
 
@@ -12,10 +15,15 @@ const Container = styled.div`
 export const ConversationDetail: React.FC<Props> = ({ conversation }) => {
   const { currentUser } = useAuth()
 
+  const { data: conv } = useGetConversationSubscription({
+    variables: { id: conversation.id },
+  })
+
   const [message, setMessage] = useState('')
   const [addMessage] = useAddMessageMutation()
 
   const onSend = (conversationId: string) => {
+    setMessage('')
     addMessage({
       variables: {
         message: {
@@ -29,14 +37,14 @@ export const ConversationDetail: React.FC<Props> = ({ conversation }) => {
 
   return (
     <Container>
-      Conversation: {conversation.id}
+      Conversation: {conv?.getConversation?.id}
       <div>
-        {conversation.users?.map((user: any) => {
+        {conv?.getConversation?.users?.map((user: any) => {
           return user && <div>{user.username}</div>
         })}
       </div>
       <div>
-        {conversation.messages?.map((message: any) => {
+        {conv?.getConversation?.messages?.map((message: any) => {
           return (
             message && (
               <div>

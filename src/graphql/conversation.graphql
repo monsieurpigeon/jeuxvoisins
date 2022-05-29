@@ -37,3 +37,19 @@ mutation addConversation($email1: String!, $email2: String!) {
     }
   }
 }
+
+subscription getConversation($id: ID!) {
+  getConversation(id: $id) {
+    id
+    users {
+      username
+      email
+    }
+    messages {
+      ...messageFragment
+      author {
+        username
+      }
+    }
+  }
+}
