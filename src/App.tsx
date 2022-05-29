@@ -5,9 +5,9 @@ import {
   InMemoryCache,
   split,
 } from '@apollo/client'
+import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/link-context'
-import { WebSocketLink } from '@apollo/link-ws'
 import React, { useContext } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
