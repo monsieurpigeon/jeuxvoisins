@@ -8,6 +8,7 @@ import { setContext } from '@apollo/link-context'
 import React, { useContext } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
+import { ProtectedRoute } from './components/PrivateRoute'
 import { AuthContext } from './contextes/auth'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
@@ -49,11 +50,46 @@ function App({ idToken }: any) {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/jeux" element={<Games />} />
-            <Route path="/voisins" element={<Neighbors />} />
-            <Route path="/messages" element={<Conversations />} />
-            <Route path="/profil" element={<Profile />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/jeux"
+              element={
+                <ProtectedRoute>
+                  <Games />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/voisins"
+              element={
+                <ProtectedRoute>
+                  <Neighbors />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <ProtectedRoute>
+                  <Conversations />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profil"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<Signup />} />
           </Routes>

@@ -55,8 +55,12 @@ export const Navigation = () => {
           </Link>
         )
       })}
-      <LogOut onClick={handleLogout}>LOG OUT</LogOut>
-      <Container>Je suis : {currentUser?.email}</Container>
+      {currentUser && (
+        <>
+          <LogOut onClick={handleLogout}>LOG OUT</LogOut>
+          <Container>Je suis : {currentUser?.email}</Container>
+        </>
+      )}
     </Menu>
   )
 }
