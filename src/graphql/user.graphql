@@ -19,7 +19,14 @@ query allUsers {
 
 query getUser($email: String!) {
   getUser(email: $email) {
-    ...userData
+    ...userFragment
+    conversations {
+      id
+      users {
+        username
+        email
+      }
+    }
   }
 }
 

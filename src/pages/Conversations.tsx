@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
 import {
   useAddMessageMutation,
-  useAllConversationsQuery,
+  useMyConversationsQuery,
 } from '../generated/graphql'
 
 type Props = {}
@@ -13,15 +13,15 @@ const Container = styled.div`
 `
 
 const Conversations: React.FC<Props> = () => {
-  const { data } = useAllConversationsQuery()
-  console.log(data)
-
-  const [message, setMessage] = useState('')
-  const [addMessage] = useAddMessageMutation()
   const { currentUser } = useAuth()
 
+  const { data } = useMyConversationsQuery({
+    variables: { email: currentUser?.email || '' },
+  })
+  const [message, setMessage] = useState('')
+  const [addMessage] = useAddMessageMutation()
+
   const onSend = (conversationId: string) => {
-    console.log(message)
     addMessage({
       variables: {
         message: {
@@ -36,7 +36,7 @@ const Conversations: React.FC<Props> = () => {
   return (
     <Container>
       <div> Conversations</div>
-      {data?.queryConversation?.map((conversation) => {
+      {data?.getUser?.conversations?.map((conversation) => {
         return (
           conversation && (
             <div>

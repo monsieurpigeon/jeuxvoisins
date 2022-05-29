@@ -18,7 +18,6 @@ import Neighbors from './pages/Neighbors'
 import Profile from './pages/Profile'
 
 const createApolloClient = (token: string) => {
-  console.log({ token })
   const httpLink = createHttpLink({
     uri: 'https://nameless-brook-330330.eu-central-1.aws.cloud.dgraph.io/graphql',
   })

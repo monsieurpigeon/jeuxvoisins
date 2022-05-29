@@ -21,3 +21,19 @@ query allConversations {
     ...conversationData
   }
 }
+
+query myConversations($email: String!) {
+  getUser(email: $email) {
+    conversations {
+      ...conversationData
+    }
+  }
+}
+
+mutation addConversation($email1: String!, $email2: String!) {
+  addConversation(input: { users: [{ email: $email1 }, { email: $email2 }] }) {
+    conversation {
+      id
+    }
+  }
+}

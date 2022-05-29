@@ -10,7 +10,6 @@ const Container = styled.div`
 
 const Profile: React.FC<Props> = () => {
   const { currentUser } = useAuth()
-  console.log(currentUser)
   const { data } = useGetUserQuery({
     variables: { email: currentUser?.email || '' },
   })

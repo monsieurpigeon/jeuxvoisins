@@ -1,6 +1,7 @@
 import { getAuth, signOut } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { useAuth } from '../contextes/auth'
 
 const Menu = styled.ul`
   padding: 0;
@@ -11,6 +12,10 @@ const Menu = styled.ul`
 
 const MenuElement = styled.li`
   display: block;
+`
+
+const Container = styled.div`
+  color: white;
 `
 
 const LogOut = styled.div`
@@ -28,6 +33,7 @@ const menuElements = [
 
 export const Navigation = () => {
   const auth = getAuth()
+  const { currentUser } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -50,6 +56,7 @@ export const Navigation = () => {
         )
       })}
       <LogOut onClick={handleLogout}>LOG OUT</LogOut>
+      <Container>Je suis : {currentUser?.email}</Container>
     </Menu>
   )
 }
