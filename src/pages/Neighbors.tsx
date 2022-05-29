@@ -21,7 +21,6 @@ const Neighbors: React.FC<Props> = () => {
   const { data: me } = useGetUserQuery({
     variables: { email: currentUser?.email || '' },
   })
-  console.log(me)
 
   const myConversations = useMemo(() => {
     return me?.getUser?.conversations

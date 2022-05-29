@@ -21,15 +21,14 @@ export const UserDetail: React.FC<Props> = ({
 }) => {
   const [addConversation] = useAddConversationMutation()
   const { currentUser } = useAuth()
+  console.log(conversationId, currentUser?.email, email)
 
   return (
     <Container>
       User: {email}
       <button
         onClick={() => {
-          if (conversationId) {
-            console.log('update')
-          } else {
+          if (!conversationId) {
             addConversation({
               variables: { email1: currentUser?.email || '', email2: email },
             })
