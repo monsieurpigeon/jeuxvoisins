@@ -1,12 +1,17 @@
 import 'firebase/functions'
 import { getFunctions, httpsCallable } from 'firebase/functions'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import App from '../App'
 import { auth } from '../base'
 
+interface User {
+  email: string
+  username: string
+}
+
 export const AuthContext = React.createContext({
   loading: true,
-  currentUser: null,
+  currentUser: null as User | null,
 })
 
 export const AuthProvider = ({ children }: any) => {
@@ -32,6 +37,7 @@ export const AuthProvider = ({ children }: any) => {
   if (loading) {
     return <>Loading...</>
   }
+
   return (
     <AuthContext.Provider
       value={{
@@ -43,4 +49,9 @@ export const AuthProvider = ({ children }: any) => {
       <App idToken={idToken} />
     </AuthContext.Provider>
   )
+}
+
+export const useAuth = () => {
+  const auth = useContext(AuthContext)
+  return auth
 }

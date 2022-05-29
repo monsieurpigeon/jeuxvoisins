@@ -4,10 +4,11 @@ type Game {
 }
 
 type User {
+  email: String! @id
   username: String! @id
-  email: String!
   zipCode: String
   conversations: [Conversation] @hasInverse(field: users)
+  messages: [Message] @hasInverse(field: author)
 }
 
 type Conversation {
@@ -19,6 +20,7 @@ type Conversation {
 
 type Message {
   id: ID!
+  author: User! @hasInverse(field: messages)
   conversation: Conversation @hasInverse(field: messages)
   createdAt: DateTime
   content: String!

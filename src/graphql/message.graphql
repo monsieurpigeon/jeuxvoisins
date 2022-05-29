@@ -9,4 +9,15 @@ fragment messageData on Message {
   conversation {
     ...conversationFragment
   }
+  author {
+    username
+  }
+}
+
+mutation addMessage($message: AddMessageInput!) {
+  addMessage(input: [$message]) {
+    message {
+      ...messageData
+    }
+  }
 }

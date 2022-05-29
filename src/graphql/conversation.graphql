@@ -7,8 +7,17 @@ fragment conversationData on Conversation {
   ...conversationFragment
   messages {
     ...messageFragment
+    author {
+      username
+    }
   }
   users {
     ...userFragment
+  }
+}
+
+query allConversations {
+  queryConversation(order: { asc: createdAt }) {
+    ...conversationData
   }
 }

@@ -64,6 +64,7 @@ export type AddGamePayloadGameArgs = {
 };
 
 export type AddMessageInput = {
+  author: UserRef;
   content: Scalars['String'];
   conversation?: InputMaybe<ConversationRef>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
@@ -86,6 +87,7 @@ export type AddMessagePayloadMessageArgs = {
 export type AddUserInput = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email: Scalars['String'];
+  messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username: Scalars['String'];
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -419,10 +421,16 @@ export type IntersectsFilter = {
 
 export type Message = {
   __typename?: 'Message';
+  author: User;
   content: Scalars['String'];
   conversation?: Maybe<Conversation>;
   createdAt?: Maybe<Scalars['DateTime']>;
   id: Scalars['ID'];
+};
+
+
+export type MessageAuthorArgs = {
+  filter?: InputMaybe<UserFilter>;
 };
 
 
@@ -448,6 +456,7 @@ export type MessageFilter = {
 };
 
 export enum MessageHasFilter {
+  Author = 'author',
   Content = 'content',
   Conversation = 'conversation',
   CreatedAt = 'createdAt'
@@ -465,12 +474,14 @@ export enum MessageOrderable {
 }
 
 export type MessagePatch = {
+  author?: InputMaybe<UserRef>;
   content?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationRef>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type MessageRef = {
+  author?: InputMaybe<UserRef>;
   content?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationRef>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
@@ -667,7 +678,8 @@ export type QueryGetMessageArgs = {
 
 
 export type QueryGetUserArgs = {
-  username: Scalars['String'];
+  email?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -821,6 +833,8 @@ export type User = {
   conversations?: Maybe<Array<Maybe<Conversation>>>;
   conversationsAggregate?: Maybe<ConversationAggregateResult>;
   email: Scalars['String'];
+  messages?: Maybe<Array<Maybe<Message>>>;
+  messagesAggregate?: Maybe<MessageAggregateResult>;
   username: Scalars['String'];
   zipCode?: Maybe<Scalars['String']>;
 };
@@ -838,6 +852,19 @@ export type UserConversationsAggregateArgs = {
   filter?: InputMaybe<ConversationFilter>;
 };
 
+
+export type UserMessagesArgs = {
+  filter?: InputMaybe<MessageFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<MessageOrder>;
+};
+
+
+export type UserMessagesAggregateArgs = {
+  filter?: InputMaybe<MessageFilter>;
+};
+
 export type UserAggregateResult = {
   __typename?: 'UserAggregateResult';
   count?: Maybe<Scalars['Int']>;
@@ -851,6 +878,7 @@ export type UserAggregateResult = {
 
 export type UserFilter = {
   and?: InputMaybe<Array<InputMaybe<UserFilter>>>;
+  email?: InputMaybe<StringHashFilter>;
   has?: InputMaybe<Array<InputMaybe<UserHasFilter>>>;
   not?: InputMaybe<UserFilter>;
   or?: InputMaybe<Array<InputMaybe<UserFilter>>>;
@@ -860,6 +888,7 @@ export type UserFilter = {
 export enum UserHasFilter {
   Conversations = 'conversations',
   Email = 'email',
+  Messages = 'messages',
   Username = 'username',
   ZipCode = 'zipCode'
 }
@@ -878,13 +907,14 @@ export enum UserOrderable {
 
 export type UserPatch = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
-  email?: InputMaybe<Scalars['String']>;
+  messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
 
 export type UserRef = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email?: InputMaybe<Scalars['String']>;
+  messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -895,7 +925,12 @@ export type WithinFilter = {
 
 export type ConversationFragmentFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null };
 
-export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null };
+export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null };
+
+export type AllConversationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllConversationsQuery = { __typename?: 'Query', queryConversation?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null } | null> | null };
 
 export type GameFragmentFragment = { __typename?: 'Game', id: string, name: string };
 
@@ -929,7 +964,14 @@ export type UpdateGameMutation = { __typename?: 'Mutation', updateGame?: { __typ
 
 export type MessageFragmentFragment = { __typename?: 'Message', id: string, createdAt?: any | null, content: string };
 
-export type MessageDataFragment = { __typename?: 'Message', id: string, createdAt?: any | null, content: string, conversation?: { __typename?: 'Conversation', id: string, createdAt?: any | null } | null };
+export type MessageDataFragment = { __typename?: 'Message', id: string, createdAt?: any | null, content: string, conversation?: { __typename?: 'Conversation', id: string, createdAt?: any | null } | null, author: { __typename?: 'User', username: string } };
+
+export type AddMessageMutationVariables = Exact<{
+  message: AddMessageInput;
+}>;
+
+
+export type AddMessageMutation = { __typename?: 'Mutation', addMessage?: { __typename?: 'AddMessagePayload', message?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, conversation?: { __typename?: 'Conversation', id: string, createdAt?: any | null } | null, author: { __typename?: 'User', username: string } } | null> | null } | null };
 
 export type UserFragmentFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null };
 
@@ -941,7 +983,7 @@ export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null };
 
 export type GetUserQueryVariables = Exact<{
-  username: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
@@ -986,6 +1028,9 @@ export const ConversationDataFragmentDoc = gql`
   ...conversationFragment
   messages {
     ...messageFragment
+    author {
+      username
+    }
   }
   users {
     ...userFragment
@@ -1011,6 +1056,9 @@ export const MessageDataFragmentDoc = gql`
   conversation {
     ...conversationFragment
   }
+  author {
+    username
+  }
 }
     ${MessageFragmentFragmentDoc}
 ${ConversationFragmentFragmentDoc}`;
@@ -1023,6 +1071,40 @@ export const UserDataFragmentDoc = gql`
 }
     ${UserFragmentFragmentDoc}
 ${ConversationFragmentFragmentDoc}`;
+export const AllConversationsDocument = gql`
+    query allConversations {
+  queryConversation(order: {asc: createdAt}) {
+    ...conversationData
+  }
+}
+    ${ConversationDataFragmentDoc}`;
+
+/**
+ * __useAllConversationsQuery__
+ *
+ * To run a query within a React component, call `useAllConversationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllConversationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllConversationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllConversationsQuery(baseOptions?: Apollo.QueryHookOptions<AllConversationsQuery, AllConversationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllConversationsQuery, AllConversationsQueryVariables>(AllConversationsDocument, options);
+      }
+export function useAllConversationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllConversationsQuery, AllConversationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllConversationsQuery, AllConversationsQueryVariables>(AllConversationsDocument, options);
+        }
+export type AllConversationsQueryHookResult = ReturnType<typeof useAllConversationsQuery>;
+export type AllConversationsLazyQueryHookResult = ReturnType<typeof useAllConversationsLazyQuery>;
+export type AllConversationsQueryResult = Apollo.QueryResult<AllConversationsQuery, AllConversationsQueryVariables>;
 export const AllGamesDocument = gql`
     query allGames {
   queryGame(order: {asc: name}) {
@@ -1162,6 +1244,41 @@ export function useUpdateGameMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateGameMutationHookResult = ReturnType<typeof useUpdateGameMutation>;
 export type UpdateGameMutationResult = Apollo.MutationResult<UpdateGameMutation>;
 export type UpdateGameMutationOptions = Apollo.BaseMutationOptions<UpdateGameMutation, UpdateGameMutationVariables>;
+export const AddMessageDocument = gql`
+    mutation addMessage($message: AddMessageInput!) {
+  addMessage(input: [$message]) {
+    message {
+      ...messageData
+    }
+  }
+}
+    ${MessageDataFragmentDoc}`;
+export type AddMessageMutationFn = Apollo.MutationFunction<AddMessageMutation, AddMessageMutationVariables>;
+
+/**
+ * __useAddMessageMutation__
+ *
+ * To run a mutation, you first call `useAddMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMessageMutation, { data, loading, error }] = useAddMessageMutation({
+ *   variables: {
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useAddMessageMutation(baseOptions?: Apollo.MutationHookOptions<AddMessageMutation, AddMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddMessageMutation, AddMessageMutationVariables>(AddMessageDocument, options);
+      }
+export type AddMessageMutationHookResult = ReturnType<typeof useAddMessageMutation>;
+export type AddMessageMutationResult = Apollo.MutationResult<AddMessageMutation>;
+export type AddMessageMutationOptions = Apollo.BaseMutationOptions<AddMessageMutation, AddMessageMutationVariables>;
 export const AllUsersDocument = gql`
     query allUsers {
   queryUser {
@@ -1197,8 +1314,8 @@ export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
 export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
 export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
 export const GetUserDocument = gql`
-    query getUser($username: String!) {
-  getUser(username: $username) {
+    query getUser($email: String!) {
+  getUser(email: $email) {
     ...userData
   }
 }
@@ -1216,7 +1333,7 @@ export const GetUserDocument = gql`
  * @example
  * const { data, loading, error } = useGetUserQuery({
  *   variables: {
- *      username: // value for 'username'
+ *      email: // value for 'email'
  *   },
  * });
  */

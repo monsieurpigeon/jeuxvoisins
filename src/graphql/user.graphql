@@ -17,8 +17,8 @@ query allUsers {
   }
 }
 
-query getUser($username: String!) {
-  getUser(username: $username) {
+query getUser($email: String!) {
+  getUser(email: $email) {
     ...userData
   }
 }
