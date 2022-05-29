@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth } from '../../base'
 import { useAddUserMutation } from '../../generated/graphql'
 
-const SignUp = () => {
+const Signup = () => {
   const [addUser] = useAddUserMutation()
   const navigate = useNavigate()
   const handleSignUp = useCallback(
@@ -46,4 +46,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp
+export default Signup
