@@ -11,6 +11,15 @@ const Container = styled.div`
   color: white;
 `
 
+const UsernameContainer = styled.div<{ selected: boolean }>`
+  border: 1px solid red;
+  padding: 10px;
+  ${(props) => (props.selected ? 'background-color: blue;' : null)}
+  &:hover {
+    background-color: red;
+  }
+`
+
 const ConversationContainer = styled.div`
   padding: 20px;
 `
@@ -30,7 +39,10 @@ const Conversations: React.FC<Props> = () => {
         {data?.getUser?.conversations?.map((conversation) => {
           return (
             conversation && (
-              <div onClick={() => setSelectedConversation(conversation)}>
+              <UsernameContainer
+                selected={selectedConversation.id === conversation.id}
+                onClick={() => setSelectedConversation(conversation)}
+              >
                 <h1>
                   {
                     conversation?.users?.find(
@@ -38,7 +50,7 @@ const Conversations: React.FC<Props> = () => {
                     )?.username
                   }
                 </h1>
-              </div>
+              </UsernameContainer>
             )
           )
         })}

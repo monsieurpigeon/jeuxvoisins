@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
 import { useAddConversationMutation } from '../generated/graphql'
@@ -21,7 +22,7 @@ export const UserDetail: React.FC<Props> = ({
 }) => {
   const [addConversation] = useAddConversationMutation()
   const { currentUser } = useAuth()
-  console.log(conversationId, currentUser?.email, email)
+  const navigate = useNavigate()
 
   return (
     <Container>
@@ -33,6 +34,7 @@ export const UserDetail: React.FC<Props> = ({
               variables: { email1: currentUser?.email || '', email2: email },
             })
           }
+          navigate('/')
         }}
       >
         Contacter
