@@ -5,7 +5,11 @@ import styled from 'styled-components'
 import { UserCard } from '../components/cards/UserCard'
 import { useAuth } from '../contextes/auth'
 import { selectedState } from '../contextes/selection'
-import { useAllUsersQuery, useGetUserQuery } from '../generated/graphql'
+import {
+  useAddConversationMutation,
+  useAllUsersQuery,
+  useGetUserQuery,
+} from '../generated/graphql'
 
 type Props = {}
 
@@ -35,24 +39,38 @@ const Neighbors: React.FC<Props> = () => {
   const navigate = useNavigate()
 
   const state = useReactiveVar(selectedState)
+  const [addConversation] = useAddConversationMutation()
 
   const { data: me } = useGetUserQuery({
     variables: { email: currentUser?.email || '' },
   })
 
-  const myConversations = useMemo(() => {
-    return me?.getUser?.conversations
-      ?.map((conversation) => ({
-        id: conversation?.id,
-        user: conversation?.users?.find(
-          (user) => user?.email !== currentUser?.email
-        )?.email,
-      }))
-      .reduce((memo: any, el) => {
-        memo[el.user || ''] = el.id
-        return memo
-      }, {})
-  }, [me, currentUser])
+  const handleClick = () => {
+    if (state.username && !myConversations?.includes(state.username)) {
+      addConversation({
+        variables: { email1: currentUser?.email || '', email2: state.username },
+      }).then(() => {
+        navigate('/messages')
+      })
+    } else {
+      navigate('/messages')
+    }
+  }
+
+  const closeUser = () => {
+    selectedState({ username: undefined })
+  }
+
+  const myConversations = useMemo(
+    () =>
+      me?.getUser?.conversations?.map(
+        (conversation) =>
+          conversation?.users?.find(
+            (user) => user?.email !== currentUser?.email
+          )?.email
+      ),
+    [me, currentUser]
+  )
 
   return (
     <>
@@ -64,7 +82,6 @@ const Neighbors: React.FC<Props> = () => {
               <UserCard
                 key={user.username}
                 username={user.username}
-                conversationId={myConversations && myConversations[user.email]}
                 onClick={() =>
                   selectedState({
                     username:
@@ -78,16 +95,8 @@ const Neighbors: React.FC<Props> = () => {
       {state.username && (
         <UserDetail>
           User: {state.username}
-          <button
-            onClick={() => {
-              navigate('/messages')
-            }}
-          >
-            Contacter
-          </button>
-          <button onClick={() => selectedState({ username: undefined })}>
-            Fermer
-          </button>
+          <button onClick={handleClick}>Contacter</button>
+          <button onClick={closeUser}>Fermer</button>
         </UserDetail>
       )}
     </>

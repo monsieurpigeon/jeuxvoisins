@@ -47,7 +47,7 @@ export const ConversationDetail: React.FC<Props> = ({ conversation }) => {
         {conv?.getConversation?.messages?.map((message: any) => {
           return (
             message && (
-              <div>
+              <div key={message.id}>
                 {message.author.username} : {message.content}
               </div>
             )
