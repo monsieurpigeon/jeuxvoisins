@@ -40,7 +40,7 @@ export const ConversationDetail: React.FC<Props> = ({ conversation }) => {
       Conversation: {conv?.getConversation?.id}
       <div>
         {conv?.getConversation?.users?.map((user: any) => {
-          return user && <div>{user.username}</div>
+          return user && <div key={user.username}>{user.username}</div>
         })}
       </div>
       <div>

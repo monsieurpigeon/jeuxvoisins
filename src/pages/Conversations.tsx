@@ -29,8 +29,9 @@ const ConversationContainer = styled.div`
 const Conversations: React.FC<Props> = () => {
   const { currentUser } = useAuth()
 
-  const { data } = useMyConversationsQuery({
+  const { data, loading, error } = useMyConversationsQuery({
     variables: { email: currentUser?.email || '' },
+    fetchPolicy: 'network-only',
   })
 
   const [selectedConversation, setSelectedConversation] = useState<any>()
@@ -45,28 +46,31 @@ const Conversations: React.FC<Props> = () => {
     )
   }, [state, data])
 
+  console.log({ data, error })
+
   return (
     <Container>
       <div>
-        {data?.getUser?.conversations?.map((conversation) => {
-          return (
-            conversation && (
-              <UsernameContainer
-                selected={selectedConversation?.id === conversation.id}
-                onClick={() => setSelectedConversation(conversation)}
-                key={conversation.id}
-              >
-                <h1>
-                  {
-                    conversation?.users?.find(
-                      (user) => user?.email !== currentUser?.email
-                    )?.username
-                  }
-                </h1>
-              </UsernameContainer>
+        {!loading &&
+          data?.getUser?.conversations?.map((conversation) => {
+            return (
+              conversation && (
+                <UsernameContainer
+                  selected={selectedConversation?.id === conversation.id}
+                  onClick={() => setSelectedConversation(conversation)}
+                  key={conversation.id}
+                >
+                  <h1>
+                    {
+                      conversation?.users?.find(
+                        (user) => user?.email !== currentUser?.email
+                      )?.username
+                    }
+                  </h1>
+                </UsernameContainer>
+              )
             )
-          )
-        })}
+          })}
       </div>
       <ConversationContainer>
         {selectedConversation && (
