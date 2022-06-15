@@ -40,16 +40,13 @@ const Neighbors: React.FC<Props> = () => {
     variables: { email: currentUser?.email || '' },
   })
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (store && store.username && !myConversations?.includes(store.username)) {
-      addConversation({
+      await addConversation({
         variables: { email1: currentUser?.email || '', email2: store.username },
-      }).then(() => {
-        navigate('/messages')
       })
-    } else {
-      navigate('/messages')
     }
+    navigate('/messages')
   }
 
   const closeUser = () => {

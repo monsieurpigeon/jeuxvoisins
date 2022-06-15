@@ -38,7 +38,6 @@ const Conversations: React.FC<Props> = () => {
 
   useEffect(() => {
     if (store && store.username) {
-      console.log(store, selectedConversation, data)
       setSelectedConversation(
         data?.getUser?.conversations?.find((conversation) =>
           conversation?.users
