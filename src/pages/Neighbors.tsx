@@ -1,10 +1,9 @@
-import { useReactiveVar } from '@apollo/client'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { UserCard } from '../components/cards/UserCard'
 import { useAuth } from '../contextes/auth'
-import { selectedState } from '../contextes/selection'
+import { Store, useStore } from '../contextes/store'
 import {
   useAddConversationMutation,
   useAllUsersQuery,
@@ -29,16 +28,12 @@ const UserDetail = styled.div`
   color: white;
 `
 
-// Get a list of users from a set of filters
-// Display a user screen on click
-// navigate to /messages
-
 const Neighbors: React.FC<Props> = () => {
   const { currentUser } = useAuth()
   const { data } = useAllUsersQuery()
   const navigate = useNavigate()
+  const { store, setStore } = useStore()
 
-  const state = useReactiveVar(selectedState)
   const [addConversation] = useAddConversationMutation()
 
   const { data: me } = useGetUserQuery({
@@ -46,9 +41,9 @@ const Neighbors: React.FC<Props> = () => {
   })
 
   const handleClick = () => {
-    if (state.username && !myConversations?.includes(state.username)) {
+    if (store && store.username && !myConversations?.includes(store.username)) {
       addConversation({
-        variables: { email1: currentUser?.email || '', email2: state.username },
+        variables: { email1: currentUser?.email || '', email2: store.username },
       }).then(() => {
         navigate('/messages')
       })
@@ -58,10 +53,10 @@ const Neighbors: React.FC<Props> = () => {
   }
 
   const closeUser = () => {
-    selectedState({ username: undefined })
+    setStore((store: Store) => ({ ...store, username: undefined }))
   }
 
-  const myConversations = useMemo(
+  const myConversations: any = useMemo(
     () =>
       me?.getUser?.conversations?.map(
         (conversation) =>
@@ -83,18 +78,19 @@ const Neighbors: React.FC<Props> = () => {
                 key={user.username}
                 username={user.username}
                 onClick={() =>
-                  selectedState({
+                  setStore((store: Store) => ({
+                    ...store,
                     username:
-                      user.email === state.username ? undefined : user.email,
-                  })
+                      user.email === store?.username ? undefined : user.email,
+                  }))
                 }
               />
             )
         )}
       </Container>
-      {state.username && (
+      {store && store.username && (
         <UserDetail>
-          User: {state.username}
+          User: {store.username}
           <button onClick={handleClick}>Contacter</button>
           <button onClick={closeUser}>Fermer</button>
         </UserDetail>

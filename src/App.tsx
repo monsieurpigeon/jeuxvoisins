@@ -8,11 +8,12 @@ import {
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/link-context'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import { ProtectedRoute } from './components/PrivateRoute'
 import { AuthContext } from './contextes/auth'
+import { StoreProvider } from './contextes/store'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Conversations from './pages/Conversations'
@@ -73,54 +74,56 @@ function App({ idToken }: any) {
   const client = createApolloClient(idToken)
   return (
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/jeux"
-              element={
-                <ProtectedRoute>
-                  <Games />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/voisins"
-              element={
-                <ProtectedRoute>
-                  <Neighbors />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/messages"
-              element={
-                <ProtectedRoute>
-                  <Conversations />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profil"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<Login />} />
-            <Route path="/sign-up" element={<Signup />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <StoreProvider>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/jeux"
+                element={
+                  <ProtectedRoute>
+                    <Games />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/voisins"
+                element={
+                  <ProtectedRoute>
+                    <Neighbors />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/messages"
+                element={
+                  <ProtectedRoute>
+                    <Conversations />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profil"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/sign-up" element={<Signup />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </StoreProvider>
     </ApolloProvider>
   )
 }

@@ -1,9 +1,8 @@
-import { useReactiveVar } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ConversationDetail } from '../components/ConversationDetail'
 import { useAuth } from '../contextes/auth'
-import { selectedState } from '../contextes/selection'
+import { Store, useStore } from '../contextes/store'
 import { useMyConversationsQuery } from '../generated/graphql'
 
 type Props = {}
@@ -28,25 +27,27 @@ const ConversationContainer = styled.div`
 
 const Conversations: React.FC<Props> = () => {
   const { currentUser } = useAuth()
+  const { store, setStore } = useStore()
 
-  const { data, loading, error } = useMyConversationsQuery({
+  const { data, loading } = useMyConversationsQuery({
     variables: { email: currentUser?.email || '' },
     fetchPolicy: 'network-only',
   })
 
   const [selectedConversation, setSelectedConversation] = useState<any>()
 
-  const state = useReactiveVar(selectedState)
-
   useEffect(() => {
-    setSelectedConversation(
-      data?.getUser?.conversations?.find((conversation) =>
-        conversation?.users?.map((user) => user?.email).includes(state.username)
+    if (store && store.username) {
+      console.log(store, selectedConversation, data)
+      setSelectedConversation(
+        data?.getUser?.conversations?.find((conversation) =>
+          conversation?.users
+            ?.map((user) => user?.email)
+            .includes(store.username)
+        )
       )
-    )
-  }, [state, data])
-
-  console.log({ data, error })
+    }
+  }, [store, data])
 
   return (
     <Container>
@@ -57,7 +58,14 @@ const Conversations: React.FC<Props> = () => {
               conversation && (
                 <UsernameContainer
                   selected={selectedConversation?.id === conversation.id}
-                  onClick={() => setSelectedConversation(conversation)}
+                  onClick={() =>
+                    setStore((store: Store) => ({
+                      ...store,
+                      username: conversation?.users?.find(
+                        (user) => user?.email !== currentUser?.email
+                      )?.email,
+                    }))
+                  }
                   key={conversation.id}
                 >
                   <h1>
