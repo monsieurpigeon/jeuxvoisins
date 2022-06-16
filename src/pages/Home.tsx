@@ -25,7 +25,7 @@ const Home: React.FC<Props> = () => {
       <TextContainer color={'lightblue'}>
         Retrouvez le repository du projet{' '}
         <a
-          href="https://github.com/monsieurpigeon/jeuxdesociete"
+          href="https://github.com/monsieurpigeon/jeuxvoisins"
           target="_blank"
           rel="noreferrer"
         >
@@ -41,7 +41,8 @@ const Home: React.FC<Props> = () => {
         >
           live sur twitch
         </a>{' '}
-        pour assister au développement de l'application
+        pour assister au développement de l'application tous les soirs de 19h à
+        21h
       </TextContainer>
       Vive Modez
     </Container>

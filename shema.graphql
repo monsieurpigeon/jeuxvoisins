@@ -1,6 +1,7 @@
 type Game {
   id: ID!
   name: String! @search(by: [term])
+  users: [User!] @hasInverse(field: games)
 }
 
 type User {
@@ -9,6 +10,7 @@ type User {
   zipCode: String
   conversations: [Conversation!] @hasInverse(field: users)
   messages: [Message!] @hasInverse(field: author)
+  games: [Game!] @hasInverse(field: users)
 }
 
 type Conversation {

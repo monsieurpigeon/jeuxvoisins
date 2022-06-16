@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
-type Props = { name: string; onClick: () => void; selected: boolean }
+type Props = {
+  name: string
+  onClick: () => void
+  selected: boolean
+  favorite: boolean
+}
 
 const Container = styled.div<any>`
   width: 300px;
@@ -16,10 +21,16 @@ const Container = styled.div<any>`
   }
 `
 
-export const GameCard: React.FC<Props> = ({ name, onClick, selected }) => {
+export const GameCard: React.FC<Props> = ({
+  name,
+  onClick,
+  selected,
+  favorite,
+}) => {
   return (
     <Container onClick={onClick} selected={selected}>
       {name}
+      {favorite && <div>FAVORI</div>}
     </Container>
   )
 }

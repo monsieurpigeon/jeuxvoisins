@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { GameCard } from '../components/cards/GameCard'
-import { useAllGamesQuery } from '../generated/graphql'
+import { useAuth } from '../contextes/auth'
+import {
+  useAddFavoriteGameMutation,
+  useAllGamesQuery,
+  useGetUserQuery,
+  useRemoveFavoriteGameMutation,
+} from '../generated/graphql'
+
+interface Game {
+  id: string
+  name: string
+}
 
 type Props = {}
 
@@ -11,9 +22,41 @@ const Container = styled.div`
   gap: 10px;
 `
 
+const GameDetail = styled.div`
+  background-color: yellow;
+`
+
 const Games: React.FC<Props> = () => {
   const { data } = useAllGamesQuery()
-  const [selectedGameId, setSelectedGameId] = useState<string>()
+  const { currentUser } = useAuth()
+  const [addFavorite] = useAddFavoriteGameMutation()
+  const [removeFavorite] = useRemoveFavoriteGameMutation()
+  const [selectedGame, setSelectedGame] = useState<Game>()
+
+  const { data: me } = useGetUserQuery({
+    variables: { email: currentUser?.email || '' },
+  })
+
+  const onRemoveFavorite = () => {
+    removeFavorite({
+      variables: {
+        email: currentUser?.email || '',
+        gameId: selectedGame?.id || '',
+      },
+    })
+  }
+
+  const onAddFavorite = () => {
+    addFavorite({
+      variables: {
+        email: currentUser?.email || '',
+        gameId: selectedGame?.id || '',
+      },
+    })
+  }
+
+  const myFavorites = me?.getUser?.games?.map((game) => game?.id)
+
   return (
     <Container>
       {data?.queryGame?.map(
@@ -22,14 +65,32 @@ const Games: React.FC<Props> = () => {
             <GameCard
               key={game.id}
               name={game.name}
-              selected={game.id === selectedGameId}
+              selected={game.id === selectedGame?.id}
+              favorite={!!myFavorites?.includes(game.id)}
               onClick={() => {
-                setSelectedGameId((id) =>
-                  id === game.id ? undefined : game.id
+                setSelectedGame((selectedGame) =>
+                  selectedGame?.id === game.id ? undefined : game
                 )
               }}
-            ></GameCard>
+            />
           )
+      )}
+      {selectedGame && (
+        <GameDetail>
+          <h1>{selectedGame.name}</h1>
+          <p>Bla bla bla bla</p>
+          <button
+            onClick={() => {
+              myFavorites?.includes(selectedGame.id)
+                ? onRemoveFavorite()
+                : onAddFavorite()
+            }}
+          >
+            {myFavorites?.includes(selectedGame.id)
+              ? 'Retirer des favoris'
+              : 'Ajouter au favoris'}
+          </button>
+        </GameDetail>
       )}
     </Container>
   )

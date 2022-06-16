@@ -47,6 +47,7 @@ export type AddConversationPayloadConversationArgs = {
 
 export type AddGameInput = {
   name: Scalars['String'];
+  users?: InputMaybe<Array<InputMaybe<UserRef>>>;
 };
 
 export type AddGamePayload = {
@@ -87,6 +88,7 @@ export type AddMessagePayloadMessageArgs = {
 export type AddUserInput = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email: Scalars['String'];
+  games?: InputMaybe<Array<InputMaybe<GameRef>>>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username: Scalars['String'];
   zipCode?: InputMaybe<Scalars['String']>;
@@ -322,6 +324,21 @@ export type Game = {
   __typename?: 'Game';
   id: Scalars['ID'];
   name: Scalars['String'];
+  users?: Maybe<Array<Maybe<User>>>;
+  usersAggregate?: Maybe<UserAggregateResult>;
+};
+
+
+export type GameUsersArgs = {
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<UserOrder>;
+};
+
+
+export type GameUsersAggregateArgs = {
+  filter?: InputMaybe<UserFilter>;
 };
 
 export type GameAggregateResult = {
@@ -341,7 +358,8 @@ export type GameFilter = {
 };
 
 export enum GameHasFilter {
-  Name = 'name'
+  Name = 'name',
+  Users = 'users'
 }
 
 export type GameOrder = {
@@ -356,11 +374,13 @@ export enum GameOrderable {
 
 export type GamePatch = {
   name?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserRef>>>;
 };
 
 export type GameRef = {
   id?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<Array<InputMaybe<UserRef>>>;
 };
 
 export type GenerateMutationParams = {
@@ -858,6 +878,8 @@ export type User = {
   conversations?: Maybe<Array<Maybe<Conversation>>>;
   conversationsAggregate?: Maybe<ConversationAggregateResult>;
   email: Scalars['String'];
+  games?: Maybe<Array<Maybe<Game>>>;
+  gamesAggregate?: Maybe<GameAggregateResult>;
   messages?: Maybe<Array<Maybe<Message>>>;
   messagesAggregate?: Maybe<MessageAggregateResult>;
   username: Scalars['String'];
@@ -875,6 +897,19 @@ export type UserConversationsArgs = {
 
 export type UserConversationsAggregateArgs = {
   filter?: InputMaybe<ConversationFilter>;
+};
+
+
+export type UserGamesArgs = {
+  filter?: InputMaybe<GameFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order?: InputMaybe<GameOrder>;
+};
+
+
+export type UserGamesAggregateArgs = {
+  filter?: InputMaybe<GameFilter>;
 };
 
 
@@ -913,6 +948,7 @@ export type UserFilter = {
 export enum UserHasFilter {
   Conversations = 'conversations',
   Email = 'email',
+  Games = 'games',
   Messages = 'messages',
   Username = 'username',
   ZipCode = 'zipCode'
@@ -932,6 +968,7 @@ export enum UserOrderable {
 
 export type UserPatch = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
+  games?: InputMaybe<Array<InputMaybe<GameRef>>>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -939,6 +976,7 @@ export type UserPatch = {
 export type UserRef = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email?: InputMaybe<Scalars['String']>;
+  games?: InputMaybe<Array<InputMaybe<GameRef>>>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['String']>;
@@ -1022,33 +1060,49 @@ export type AddMessageMutation = { __typename?: 'Mutation', addMessage?: { __typ
 
 export type UserFragmentFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null };
 
-export type UserDataFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null };
+export type UserDataFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null };
+export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null };
 
 export type GetUserQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, users?: Array<{ __typename?: 'User', username: string, email: string } | null> | null } | null> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, users?: Array<{ __typename?: 'User', username: string, email: string } | null> | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null };
+
+export type AddFavoriteGameMutationVariables = Exact<{
+  email: Scalars['String'];
+  gameId: Scalars['ID'];
+}>;
+
+
+export type AddFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
+
+export type RemoveFavoriteGameMutationVariables = Exact<{
+  email: Scalars['String'];
+  gameId: Scalars['ID'];
+}>;
+
+
+export type RemoveFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
 
 export type AddUserMutationVariables = Exact<{
   user: AddUserInput;
 }>;
 
 
-export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
+export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   patch: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null } | null> | null } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
 
 export const ConversationFragmentFragmentDoc = gql`
     fragment conversationFragment on Conversation {
@@ -1115,9 +1169,13 @@ export const UserDataFragmentDoc = gql`
   conversations {
     ...conversationFragment
   }
+  games {
+    ...gameFragment
+  }
 }
     ${UserFragmentFragmentDoc}
-${ConversationFragmentFragmentDoc}`;
+${ConversationFragmentFragmentDoc}
+${GameFragmentFragmentDoc}`;
 export const AllConversationsDocument = gql`
     query allConversations {
   queryConversation(order: {asc: createdAt}) {
@@ -1484,9 +1542,13 @@ export const GetUserDocument = gql`
         email
       }
     }
+    games {
+      ...gameFragment
+    }
   }
 }
-    ${UserFragmentFragmentDoc}`;
+    ${UserFragmentFragmentDoc}
+${GameFragmentFragmentDoc}`;
 
 /**
  * __useGetUserQuery__
@@ -1515,6 +1577,80 @@ export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
 export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
 export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const AddFavoriteGameDocument = gql`
+    mutation addFavoriteGame($email: String!, $gameId: ID!) {
+  updateUser(input: {filter: {email: {eq: $email}}, set: {games: {id: $gameId}}}) {
+    user {
+      ...userData
+    }
+  }
+}
+    ${UserDataFragmentDoc}`;
+export type AddFavoriteGameMutationFn = Apollo.MutationFunction<AddFavoriteGameMutation, AddFavoriteGameMutationVariables>;
+
+/**
+ * __useAddFavoriteGameMutation__
+ *
+ * To run a mutation, you first call `useAddFavoriteGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFavoriteGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFavoriteGameMutation, { data, loading, error }] = useAddFavoriteGameMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      gameId: // value for 'gameId'
+ *   },
+ * });
+ */
+export function useAddFavoriteGameMutation(baseOptions?: Apollo.MutationHookOptions<AddFavoriteGameMutation, AddFavoriteGameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddFavoriteGameMutation, AddFavoriteGameMutationVariables>(AddFavoriteGameDocument, options);
+      }
+export type AddFavoriteGameMutationHookResult = ReturnType<typeof useAddFavoriteGameMutation>;
+export type AddFavoriteGameMutationResult = Apollo.MutationResult<AddFavoriteGameMutation>;
+export type AddFavoriteGameMutationOptions = Apollo.BaseMutationOptions<AddFavoriteGameMutation, AddFavoriteGameMutationVariables>;
+export const RemoveFavoriteGameDocument = gql`
+    mutation removeFavoriteGame($email: String!, $gameId: ID!) {
+  updateUser(
+    input: {filter: {email: {eq: $email}}, remove: {games: {id: $gameId}}}
+  ) {
+    user {
+      ...userData
+    }
+  }
+}
+    ${UserDataFragmentDoc}`;
+export type RemoveFavoriteGameMutationFn = Apollo.MutationFunction<RemoveFavoriteGameMutation, RemoveFavoriteGameMutationVariables>;
+
+/**
+ * __useRemoveFavoriteGameMutation__
+ *
+ * To run a mutation, you first call `useRemoveFavoriteGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFavoriteGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFavoriteGameMutation, { data, loading, error }] = useRemoveFavoriteGameMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      gameId: // value for 'gameId'
+ *   },
+ * });
+ */
+export function useRemoveFavoriteGameMutation(baseOptions?: Apollo.MutationHookOptions<RemoveFavoriteGameMutation, RemoveFavoriteGameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveFavoriteGameMutation, RemoveFavoriteGameMutationVariables>(RemoveFavoriteGameDocument, options);
+      }
+export type RemoveFavoriteGameMutationHookResult = ReturnType<typeof useRemoveFavoriteGameMutation>;
+export type RemoveFavoriteGameMutationResult = Apollo.MutationResult<RemoveFavoriteGameMutation>;
+export type RemoveFavoriteGameMutationOptions = Apollo.BaseMutationOptions<RemoveFavoriteGameMutation, RemoveFavoriteGameMutationVariables>;
 export const AddUserDocument = gql`
     mutation addUser($user: AddUserInput!) {
   addUser(input: [$user]) {

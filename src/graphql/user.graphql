@@ -9,6 +9,9 @@ fragment userData on User {
   conversations {
     ...conversationFragment
   }
+  games {
+    ...gameFragment
+  }
 }
 
 query allUsers {
@@ -26,6 +29,35 @@ query getUser($email: String!) {
         username
         email
       }
+    }
+    games {
+      ...gameFragment
+    }
+  }
+}
+
+mutation addFavoriteGame($email: String!, $gameId: ID!) {
+  updateUser(
+    input: {
+      filter: { email: { eq: $email } }
+      set: { games: { id: $gameId } }
+    }
+  ) {
+    user {
+      ...userData
+    }
+  }
+}
+
+mutation removeFavoriteGame($email: String!, $gameId: ID!) {
+  updateUser(
+    input: {
+      filter: { email: { eq: $email } }
+      remove: { games: { id: $gameId } }
+    }
+  ) {
+    user {
+      ...userData
     }
   }
 }
