@@ -1,3 +1,4 @@
+import { MdStar } from 'react-icons/md'
 import styled from 'styled-components'
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 }
 
 const Container = styled.div<any>`
+  position: relative;
   width: 300px;
   border-radius: 10px;
   background-color: ${(props) => (props.selected ? 'blue' : 'black')};
@@ -20,6 +22,13 @@ const Container = styled.div<any>`
     background-color: ${(props) => (props.selected ? 'blue' : 'darkblue')};
   }
 `
+const Title = styled.span`
+  margin-left: 30px;
+`
+
+const Icon = styled.div`
+  position: absolute;
+`
 
 export const GameCard: React.FC<Props> = ({
   name,
@@ -29,8 +38,12 @@ export const GameCard: React.FC<Props> = ({
 }) => {
   return (
     <Container onClick={onClick} selected={selected}>
-      {name}
-      {favorite && <div>FAVORI</div>}
+      {favorite && (
+        <Icon>
+          <MdStar color="yellow" />
+        </Icon>
+      )}
+      <Title>{name}</Title>
     </Container>
   )
 }
