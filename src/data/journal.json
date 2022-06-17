@@ -1,5 +1,14 @@
 [
   {
+    "date": "17/06/2022",
+    "people": [],
+    "done": [
+      "ajout du journal en home page",
+      "enregistrer position GPS sur le profil",
+      "utilitaire number precision + unit test"
+    ]
+  },
+  {
     "date": "16/06/2022",
     "people": ["glogwa68"],
     "done": [

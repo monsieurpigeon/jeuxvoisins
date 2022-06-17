@@ -12,7 +12,7 @@ const JournalDay: React.FC<DayProps> = ({ day }) => {
   return (
     <div key={day.date}>
       <h3>{day.date}</h3>
-      <div>avec: {day.people.join(', ')}</div>
+      {!!day.people.length && <div>avec: {day.people.join(', ')}</div>}
       <ul>
         {day.done.map((task) => (
           <li key={task}>{task}</li>
