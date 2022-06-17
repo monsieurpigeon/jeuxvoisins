@@ -1,0 +1,20 @@
+[
+  {
+    "date": "16/06/2022",
+    "people": ["glogwa68"],
+    "done": [
+      "détail sur un jeux",
+      "ajouter un jeu aux favoris",
+      "retirer un jeu des favoris"
+    ]
+  },
+  {
+    "date": "15/06/2022",
+    "people": ["Modez MARTIN"],
+    "done": [
+      "utiliser un contexte pour les states de navigation",
+      "réparer le passage voisin => conversation",
+      "page d'accueil"
+    ]
+  }
+]

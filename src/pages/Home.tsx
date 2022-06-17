@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Journal } from '../components/Journal'
 
 type Props = {}
 
@@ -45,6 +46,7 @@ const Home: React.FC<Props> = () => {
         21h
       </TextContainer>
       Vive Modez
+      <Journal />
     </Container>
   )
 }
