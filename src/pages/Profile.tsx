@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
 import { useGetUserQuery, useUpdateUserMutation } from '../generated/graphql'
+import { precision2 } from '../utils/numbers'
 
 type Props = {}
 
@@ -16,7 +16,6 @@ const Profile: React.FC<Props> = () => {
   const { data } = useGetUserQuery({
     variables: { email: currentUser?.email || '' },
   })
-  const [zipCode, setZipCode] = useState('')
 
   const [update] = useUpdateUserMutation()
 
@@ -25,25 +24,26 @@ const Profile: React.FC<Props> = () => {
       <h1>Profil</h1>
       <div>username: {data?.getUser?.username}</div>
       <div>email: {data?.getUser?.email}</div>
-      <div>code postal: {data?.getUser?.zipCode}</div>
-      <input
-        type="text"
-        value={zipCode}
-        onChange={(e) => setZipCode(e.target.value)}
-      />
       <button
         onClick={() => {
-          update({
-            variables: {
-              patch: {
-                filter: { username: { eq: data?.getUser?.username || '' } },
-                set: { zipCode: zipCode },
+          navigator.geolocation.getCurrentPosition((position) => {
+            update({
+              variables: {
+                patch: {
+                  filter: { username: { eq: data?.getUser?.username || '' } },
+                  set: {
+                    location: {
+                      latitude: precision2(position.coords.latitude),
+                      longitude: precision2(position.coords.longitude),
+                    },
+                  },
+                },
               },
-            },
+            })
           })
         }}
       >
-        Enregistrer le code postal
+        Enregistrer ma position
       </button>
     </Container>
   )

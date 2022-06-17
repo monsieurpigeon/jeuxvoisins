@@ -494,6 +494,18 @@
             "deprecationReason": null
           },
           {
+            "name": "location",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PointRef",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messages",
             "description": null,
             "type": {
@@ -6258,6 +6270,18 @@
             "deprecationReason": null
           },
           {
+            "name": "location",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Point",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messages",
             "description": null,
             "args": [
@@ -6598,6 +6622,12 @@
             "deprecationReason": null
           },
           {
+            "name": "location",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messages",
             "description": null,
             "isDeprecated": false,
@@ -6733,6 +6763,18 @@
             "deprecationReason": null
           },
           {
+            "name": "location",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PointRef",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "messages",
             "description": null,
             "type": {
@@ -6810,6 +6852,18 @@
                 "name": "GameRef",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "location",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PointRef",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

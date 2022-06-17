@@ -2,6 +2,10 @@ fragment userFragment on User {
   username
   email
   zipCode
+  location {
+    latitude
+    longitude
+  }
 }
 
 fragment userData on User {

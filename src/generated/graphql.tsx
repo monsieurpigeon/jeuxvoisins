@@ -89,6 +89,7 @@ export type AddUserInput = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email: Scalars['String'];
   games?: InputMaybe<Array<InputMaybe<GameRef>>>;
+  location?: InputMaybe<PointRef>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username: Scalars['String'];
   zipCode?: InputMaybe<Scalars['String']>;
@@ -880,6 +881,7 @@ export type User = {
   email: Scalars['String'];
   games?: Maybe<Array<Maybe<Game>>>;
   gamesAggregate?: Maybe<GameAggregateResult>;
+  location?: Maybe<Point>;
   messages?: Maybe<Array<Maybe<Message>>>;
   messagesAggregate?: Maybe<MessageAggregateResult>;
   username: Scalars['String'];
@@ -949,6 +951,7 @@ export enum UserHasFilter {
   Conversations = 'conversations',
   Email = 'email',
   Games = 'games',
+  Location = 'location',
   Messages = 'messages',
   Username = 'username',
   ZipCode = 'zipCode'
@@ -969,6 +972,7 @@ export enum UserOrderable {
 export type UserPatch = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   games?: InputMaybe<Array<InputMaybe<GameRef>>>;
+  location?: InputMaybe<PointRef>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   zipCode?: InputMaybe<Scalars['String']>;
 };
@@ -977,6 +981,7 @@ export type UserRef = {
   conversations?: InputMaybe<Array<InputMaybe<ConversationRef>>>;
   email?: InputMaybe<Scalars['String']>;
   games?: InputMaybe<Array<InputMaybe<GameRef>>>;
+  location?: InputMaybe<PointRef>;
   messages?: InputMaybe<Array<InputMaybe<MessageRef>>>;
   username?: InputMaybe<Scalars['String']>;
   zipCode?: InputMaybe<Scalars['String']>;
@@ -988,19 +993,19 @@ export type WithinFilter = {
 
 export type ConversationFragmentFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null };
 
-export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null };
+export type ConversationDataFragment = { __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null };
 
 export type AllConversationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllConversationsQuery = { __typename?: 'Query', queryConversation?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null } | null> | null };
+export type AllConversationsQuery = { __typename?: 'Query', queryConversation?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null> | null };
 
 export type MyConversationsQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type MyConversationsQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null } | null> | null } | null> | null } | null };
+export type MyConversationsQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null, messages?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, author: { __typename?: 'User', username: string } } | null> | null, users?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null> | null } | null };
 
 export type AddConversationMutationVariables = Exact<{
   email1: Scalars['String'];
@@ -1058,21 +1063,21 @@ export type AddMessageMutationVariables = Exact<{
 
 export type AddMessageMutation = { __typename?: 'Mutation', addMessage?: { __typename?: 'AddMessagePayload', message?: Array<{ __typename?: 'Message', id: string, createdAt?: any | null, content: string, conversation?: { __typename?: 'Conversation', id: string, createdAt?: any | null } | null, author: { __typename?: 'User', username: string } } | null> | null } | null };
 
-export type UserFragmentFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null };
+export type UserFragmentFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null };
 
-export type UserDataFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null };
+export type UserDataFragment = { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null };
 
 export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null };
+export type AllUsersQuery = { __typename?: 'Query', queryUser?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null };
 
 export type GetUserQueryVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, users?: Array<{ __typename?: 'User', username: string, email: string } | null> | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, users?: Array<{ __typename?: 'User', username: string, email: string } | null> | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null };
 
 export type AddFavoriteGameMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1080,7 +1085,7 @@ export type AddFavoriteGameMutationVariables = Exact<{
 }>;
 
 
-export type AddFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
+export type AddFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null };
 
 export type RemoveFavoriteGameMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1088,21 +1093,21 @@ export type RemoveFavoriteGameMutationVariables = Exact<{
 }>;
 
 
-export type RemoveFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
+export type RemoveFavoriteGameMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null };
 
 export type AddUserMutationVariables = Exact<{
   user: AddUserInput;
 }>;
 
 
-export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
+export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'AddUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   patch: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null } | null> | null } | null };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserPayload', user?: Array<{ __typename?: 'User', username: string, email: string, zipCode?: string | null, conversations?: Array<{ __typename?: 'Conversation', id: string, createdAt?: any | null } | null> | null, games?: Array<{ __typename?: 'Game', id: string, name: string } | null> | null, location?: { __typename?: 'Point', latitude: number, longitude: number } | null } | null> | null } | null };
 
 export const ConversationFragmentFragmentDoc = gql`
     fragment conversationFragment on Conversation {
@@ -1122,6 +1127,10 @@ export const UserFragmentFragmentDoc = gql`
   username
   email
   zipCode
+  location {
+    latitude
+    longitude
+  }
 }
     `;
 export const ConversationDataFragmentDoc = gql`

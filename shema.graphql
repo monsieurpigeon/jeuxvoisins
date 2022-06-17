@@ -11,6 +11,7 @@ type User {
   conversations: [Conversation!] @hasInverse(field: users)
   messages: [Message!] @hasInverse(field: author)
   games: [Game!] @hasInverse(field: users)
+  location: Point
 }
 
 type Conversation {
