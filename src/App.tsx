@@ -11,9 +11,10 @@ import { setContext } from '@apollo/link-context'
 import { useContext } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
-import { ProtectedRoute } from './components/PrivateRoute'
+import { AdminRoute, ProtectedRoute } from './components/PrivateRoute'
 import { AuthContext } from './contextes/auth'
 import { StoreProvider } from './contextes/store'
+import Admin from './pages/Admin'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Conversations from './pages/Conversations'
@@ -84,6 +85,14 @@ function App({ idToken }: any) {
                   <ProtectedRoute>
                     <Home />
                   </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <Admin />
+                  </AdminRoute>
                 }
               />
               <Route

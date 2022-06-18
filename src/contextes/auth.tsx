@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import App from '../App'
 import { auth } from '../base'
 
-interface User {
+export interface User {
   email: string
   username: string
 }

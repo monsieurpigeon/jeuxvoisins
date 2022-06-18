@@ -1,5 +1,14 @@
 [
   {
+    "date": "18/06/2022",
+    "people": [],
+    "done": [
+      "trouver 500 jeux",
+      "ajouter basic ACL",
+      "ajout page admin accessible aux admins exclusivement"
+    ]
+  },
+  {
     "date": "17/06/2022",
     "people": [],
     "done": [

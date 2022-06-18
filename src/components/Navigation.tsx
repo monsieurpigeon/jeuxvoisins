@@ -2,6 +2,7 @@ import { getAuth, signOut } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
+import { isAdmin } from '../utils/access'
 
 const Menu = styled.ul`
   padding: 0;
@@ -27,6 +28,8 @@ const menuElements = [
   { label: 'Profil', target: '/profil' },
 ]
 
+const adminMenuElements = [{ label: 'Admin', target: '/admin' }]
+
 export const Navigation = () => {
   const auth = getAuth()
   const { currentUser } = useAuth()
@@ -37,9 +40,13 @@ export const Navigation = () => {
       navigate('/')
     })
   }
+
   return (
     <Menu>
-      {menuElements.map((el) => {
+      {[
+        ...menuElements,
+        ...(isAdmin(currentUser) ? adminMenuElements : []),
+      ].map((el) => {
         return (
           <Link
             key={el.label}
