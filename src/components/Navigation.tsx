@@ -1,10 +1,11 @@
 import { getAuth, signOut } from 'firebase/auth'
+import JSConfetti from 'js-confetti'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
 import { isAdmin } from '../utils/access'
 
-type MenuElementProps = { selected: boolean }
+type MenuElementProps = { selected: boolean; onClick: () => void }
 
 const Header = styled.div`
   display: flex;
@@ -41,19 +42,34 @@ const LogOut = styled.div`
   cursor: pointer;
 `
 
-const menuElements = [
-  { label: 'Accueil', target: '/' },
+interface IMenuElement {
+  label: string
+  target: string
+  onClick?: () => void
+}
+
+const jsConfetti = new JSConfetti()
+
+const menuElements: IMenuElement[] = [
+  {
+    label: 'Accueil',
+    target: '/',
+    onClick: () => {
+      jsConfetti.addConfetti()
+    },
+  },
   { label: 'Jeux', target: '/jeux' },
   { label: 'Voisins', target: '/voisins' },
   { label: 'Messages', target: '/messages' },
   { label: 'Profil', target: '/profil' },
 ]
 
-const adminMenuElements = [{ label: 'Admin', target: '/admin' }]
+const adminMenuElements: IMenuElement[] = [{ label: 'Admin', target: '/admin' }]
 
 export const Navigation = () => {
   const auth = getAuth()
   const location = useLocation()
+  console.log(location)
   const { currentUser } = useAuth()
   const navigate = useNavigate()
 
@@ -76,7 +92,13 @@ export const Navigation = () => {
               pathname: el.target,
             }}
           >
-            <MenuElement selected={el.target === location.pathname}>
+            <MenuElement
+              selected={el.target === location.pathname}
+              onClick={() => {
+                // TODO better way for conditionnal onClick
+                el.onClick ? el.onClick() : console.log('hello')
+              }}
+            >
               {el.label}
             </MenuElement>
           </StyledLink>
