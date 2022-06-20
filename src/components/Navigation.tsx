@@ -42,15 +42,9 @@ const LogOut = styled.div`
   cursor: pointer;
 `
 
-interface IMenuElement {
-  label: string
-  target: string
-  onClick?: () => void
-}
-
 const jsConfetti = new JSConfetti()
 
-const menuElements: IMenuElement[] = [
+const menuElements = [
   {
     label: 'Accueil',
     target: '/',
@@ -58,18 +52,19 @@ const menuElements: IMenuElement[] = [
       jsConfetti.addConfetti()
     },
   },
-  { label: 'Jeux', target: '/jeux' },
-  { label: 'Voisins', target: '/voisins' },
-  { label: 'Messages', target: '/messages' },
-  { label: 'Profil', target: '/profil' },
+  { label: 'Jeux', target: '/jeux', onClick: () => null },
+  { label: 'Voisins', target: '/voisins', onClick: () => null },
+  { label: 'Messages', target: '/messages', onClick: () => null },
+  { label: 'Profil', target: '/profil', onClick: () => null },
 ]
 
-const adminMenuElements: IMenuElement[] = [{ label: 'Admin', target: '/admin' }]
+const adminMenuElements = [
+  { label: 'Admin', target: '/admin', onClick: () => null },
+]
 
 export const Navigation = () => {
   const auth = getAuth()
   const location = useLocation()
-  console.log(location)
   const { currentUser } = useAuth()
   const navigate = useNavigate()
 
@@ -94,10 +89,7 @@ export const Navigation = () => {
           >
             <MenuElement
               selected={el.target === location.pathname}
-              onClick={() => {
-                // TODO better way for conditionnal onClick
-                el.onClick ? el.onClick() : console.log('hello')
-              }}
+              onClick={el.onClick}
             >
               {el.label}
             </MenuElement>
