@@ -1,18 +1,39 @@
 import { getAuth, signOut } from 'firebase/auth'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
 import { isAdmin } from '../utils/access'
+
+type MenuElementProps = { selected: boolean }
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+`
 
 const Menu = styled.ul`
   padding: 0;
   margin: 0;
   display: flex;
-  gap: 10px;
 `
 
-const MenuElement = styled.li`
+// TODO : Find a better way to do the color change
+const MenuElement = styled.li<MenuElementProps>`
   display: block;
+  padding: 10px;
+  &:hover {
+    background-color: ${(props) => (props.selected ? 'yellow' : 'grey')};
+    color: ${(props) => (props.selected ? 'black' : 'white')};
+  }
+  background-color: ${(props) => (props.selected ? 'yellow' : 'inherit')};
+  color: ${(props) => (props.selected ? 'black' : 'inherit')};
+`
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
 `
 
 const LogOut = styled.div`
@@ -32,6 +53,7 @@ const adminMenuElements = [{ label: 'Admin', target: '/admin' }]
 
 export const Navigation = () => {
   const auth = getAuth()
+  const location = useLocation()
   const { currentUser } = useAuth()
   const navigate = useNavigate()
 
@@ -42,27 +64,25 @@ export const Navigation = () => {
   }
 
   return (
-    <Menu>
-      {[
-        ...menuElements,
-        ...(isAdmin(currentUser) ? adminMenuElements : []),
-      ].map((el) => {
-        return (
-          <Link
+    <Header>
+      <Menu>
+        {[
+          ...menuElements,
+          ...(isAdmin(currentUser) ? adminMenuElements : []),
+        ].map((el) => (
+          <StyledLink
             key={el.label}
             to={{
               pathname: el.target,
             }}
           >
-            <MenuElement>{el.label}</MenuElement>
-          </Link>
-        )
-      })}
-      {currentUser && (
-        <>
-          <LogOut onClick={handleLogout}>LOG OUT</LogOut>
-        </>
-      )}
-    </Menu>
+            <MenuElement selected={el.target === location.pathname}>
+              {el.label}
+            </MenuElement>
+          </StyledLink>
+        ))}
+      </Menu>
+      {currentUser && <LogOut onClick={handleLogout}>LOG OUT</LogOut>}
+    </Header>
   )
 }

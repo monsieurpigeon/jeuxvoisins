@@ -5,17 +5,6 @@ type Props = {
   children: any
 }
 
-const Container = styled.div`
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-`
-
-const Content = styled.div`
-  max-width: 800px;
-  margin: auto;
-`
-
 const Layout: React.FC<Props> = ({ children }) => {
   return (
     <Container>
@@ -24,5 +13,14 @@ const Layout: React.FC<Props> = ({ children }) => {
     </Container>
   )
 }
+
+const Container = styled.div`
+  background-color: black;
+`
+
+const Content = styled.div`
+  max-width: 800px;
+  margin: auto;
+`
 
 export default Layout
