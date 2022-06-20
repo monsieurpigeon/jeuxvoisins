@@ -1,8 +1,11 @@
 import { getAuth, signOut } from 'firebase/auth'
 import JSConfetti from 'js-confetti'
+import { useState } from 'react'
+import { MdStoreMallDirectory } from 'react-icons/md'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contextes/auth'
+import useOnClickOutsideRef from '../hooks/useClickOutside'
 import { isAdmin } from '../utils/access'
 
 type MenuElementProps = { selected: boolean; onClick: () => void }
@@ -20,26 +23,20 @@ const Menu = styled.ul`
   display: flex;
 `
 
-// TODO : Find a better way to do the color change
 const MenuElement = styled.li<MenuElementProps>`
   display: block;
   padding: 10px;
+  box-sizing: border-box;
   &:hover {
-    background-color: ${(props) => (props.selected ? 'yellow' : 'grey')};
-    color: ${(props) => (props.selected ? 'black' : 'white')};
+    background-color: yellow;
+    color: black;
   }
-  background-color: ${(props) => (props.selected ? 'yellow' : 'inherit')};
-  color: ${(props) => (props.selected ? 'black' : 'inherit')};
+  box-shadow: ${(p) => (p.selected ? 'inset 0 -2px 0 yellow' : 'none')};
 `
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
-`
-
-const LogOut = styled.div`
-  color: white;
-  cursor: pointer;
 `
 
 const jsConfetti = new JSConfetti()
@@ -55,7 +52,6 @@ const menuElements = [
   { label: 'Jeux', target: '/jeux', onClick: () => null },
   { label: 'Voisins', target: '/voisins', onClick: () => null },
   { label: 'Messages', target: '/messages', onClick: () => null },
-  { label: 'Profil', target: '/profil', onClick: () => null },
 ]
 
 const adminMenuElements = [
@@ -67,6 +63,10 @@ export const Navigation = () => {
   const location = useLocation()
   const { currentUser } = useAuth()
   const navigate = useNavigate()
+  const [showProfile, setShowProfile] = useState(false)
+  const modalRef = useOnClickOutsideRef(() => {
+    setShowProfile(false)
+  })
 
   const handleLogout = () => {
     signOut(auth).then(() => {
@@ -96,7 +96,45 @@ export const Navigation = () => {
           </StyledLink>
         ))}
       </Menu>
-      {currentUser && <LogOut onClick={handleLogout}>LOG OUT</LogOut>}
+      {currentUser && (
+        <div
+          ref={modalRef}
+          onClick={() => {
+            setShowProfile((s) => !s)
+          }}
+        >
+          <MdStoreMallDirectory color="white" />
+
+          {showProfile && (
+            <ListModal>
+              <StyledLink to={{ pathname: '/profil' }}>
+                <ListModalElement>Profil</ListModalElement>
+              </StyledLink>
+              <ListModalElement onClick={handleLogout}>
+                Déconnexion
+              </ListModalElement>
+            </ListModal>
+          )}
+        </div>
+      )}
     </Header>
   )
 }
+
+const ListModal = styled.div`
+  position: absolute;
+  width: 100px;
+  right: 0;
+`
+
+const ListModalElement = styled.div`
+  color: white;
+  background-color: grey;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  border-right: 5px solid yellow;
+  &:hover {
+    border-right: 10px solid yellow;
+  }
+`
