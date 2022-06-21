@@ -18,6 +18,7 @@ import Admin from './pages/Admin'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Conversations from './pages/Conversations'
+import Error404 from './pages/errors/404'
 import Games from './pages/Games'
 import Home from './pages/Home'
 import Neighbors from './pages/Neighbors'
@@ -79,6 +80,7 @@ function App({ idToken }: any) {
         <BrowserRouter>
           <Layout>
             <Routes>
+              <Route path="*" element={<Error404 />} />
               <Route
                 path="/"
                 element={
