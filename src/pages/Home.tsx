@@ -4,26 +4,19 @@ import { Journal } from '../components/Journal'
 type Props = {}
 
 const Container = styled.div`
-  background-color: white;
-`
-
-const TextContainer = styled.p`
-  background-color: ${(p) => p.color};
-  padding: 5px;
+  color: white;
 `
 
 const Home: React.FC<Props> = () => {
   return (
     <Container>
       <h1>Présentation</h1>
-      <TextContainer color={'lightgrey'}>
-        Ceci est un projet en cours pour réunir des fans de jeux de société
-      </TextContainer>
-      <TextContainer color={'salmon'}>
+      <p>Ceci est un projet en cours pour réunir des fans de jeux de société</p>
+      <p>
         Vous pourrez y rencontrer vos voisins qui jouent aux mêmes jeux que
         vous.
-      </TextContainer>
-      <TextContainer color={'lightblue'}>
+      </p>
+      <p>
         Retrouvez le repository du projet{' '}
         <a
           href="https://github.com/monsieurpigeon/jeuxvoisins"
@@ -32,8 +25,8 @@ const Home: React.FC<Props> = () => {
         >
           ICI
         </a>
-      </TextContainer>
-      <TextContainer color={'lightgreen'}>
+      </p>
+      <p>
         Suivez moi en{' '}
         <a
           href="https://www.twitch.tv/maxpige"
@@ -44,7 +37,7 @@ const Home: React.FC<Props> = () => {
         </a>{' '}
         pour assister au développement de l'application tous les soirs de 19h à
         21h
-      </TextContainer>
+      </p>
       Vive Modez
       <Journal />
     </Container>
