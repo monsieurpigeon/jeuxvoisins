@@ -89,7 +89,9 @@ export const Navigation = () => {
           >
             <MenuElement
               selected={el.target === location.pathname}
-              onClick={el.onClick}
+              onClick={() => {
+                el.target === location.pathname && el.onClick()
+              }}
             >
               {el.label}
             </MenuElement>
