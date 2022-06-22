@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import journal from '../data/journal.json'
+import journal from '../../data/journal.json'
 
 interface IJournalDay {
   date: string
@@ -13,6 +13,7 @@ const JournalDayContainer = styled.div`
   user-select: none;
   background-color: #252525;
   padding: 20px;
+  color: white;
   border: 1px solid grey;
   margin: 5px;
   max-width: 500px;
@@ -53,7 +54,7 @@ const JournalDayTasks = styled.ul`
   }
 `
 
-const JournalDay: React.FC<DayProps> = ({ day }) => {
+export const JournalDay: React.FC<DayProps> = ({ day }) => {
   return (
     <JournalDayContainer key={day.date}>
       <JournalDayTitle>

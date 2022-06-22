@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Journal } from '../components/Journal'
+import { Journal } from '../components/journal/Journal'
 
 type Props = {}
 
